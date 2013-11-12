@@ -34,12 +34,10 @@ class ScpTransportUI
 
     private JButton             browseButton;
     private JTextField          hostField, userField, passwdField, keyfileField, fileField;
-    private GridBagConstraints  gbc;
     private ScpTransport        trans;
     private JPanel              panel;
     private JRadioButton        passwdButton, keyButton;
-    private ButtonGroup         scpGroup;
-    
+
     //----------------------------------------------------------------------
 
     ScpTransportUI(final ScpTransport trans)
@@ -51,7 +49,7 @@ class ScpTransportUI
         panel.setLayout(new GridBagLayout());
         panel.setBorder(BorderFactory.createEtchedBorder());
 
-        gbc = new GridBagConstraints();  
+        GridBagConstraints gbc = new GridBagConstraints();
 
         gbc.gridx = gbc.gridy = 0;
         gbc.insets = new Insets(5, 5, 5, 5);
@@ -107,7 +105,7 @@ class ScpTransportUI
             }
         });
 
-        scpGroup = new ButtonGroup();
+        ButtonGroup scpGroup = new ButtonGroup();
         scpGroup.add(passwdButton);
         scpGroup.add(keyButton);
         

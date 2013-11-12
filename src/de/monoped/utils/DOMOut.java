@@ -73,7 +73,7 @@ public class DOMOut
 
     //----------------------------------------------------------------------
 
-    public DOMOut cdata(String name, String text)
+    public DOMOut cdata(String text)
     {
         buf.append("<![CDATA[").append(text).append("]]>");
         return this;
@@ -102,12 +102,10 @@ public class DOMOut
 
     //----------------------------------------------------------------------
 
-    public DOMOut finish()
+    public void finish()
     {
         while (stack.size() > 0)
             closeElement();
-
-        return this;
     }
 
     //----------------------------------------------------------------------

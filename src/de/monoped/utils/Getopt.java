@@ -124,7 +124,7 @@ public class Getopt
         while ((line = reader.readLine()) != null)
             avec.add(line);
 
-        this.argv = (String[])avec.toArray(new String[0]);
+        this.argv = avec.toArray(new String[0]);
         reader.close();
     }
 

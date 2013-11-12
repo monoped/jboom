@@ -22,17 +22,6 @@ import java.util.*;
 
 public class CSVImporter
 {
-    private ArrayList<String[]> list;
-
-    //----------------------------------------------------------------------
-
-    public CSVImporter()
-    {
-        list = new ArrayList<String[]>();       
-    }
-
-    //----------------------------------------------------------------------
-
     public ArrayList<String[]> importCSV(Reader in, char sep)
         throws IOException
     {
@@ -44,7 +33,6 @@ public class CSVImporter
         {
             line = line.trim();
 
-            int                 ia = 0;
             ArrayList<String>   vals = new ArrayList<String>();
             boolean             inquote = false, wasquote = false;
             StringBuilder       word = new StringBuilder();

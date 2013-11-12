@@ -38,13 +38,12 @@ abstract class TransportUI
     protected JCheckBox         activeCheck;
     protected JTextField        nameField;
     private ActionListener      listener;
-    private UIFactory           uif;
 
     //----------------------------------------------------------------------
 
     TransportUI(Transport trans)
     {
-        uif = new UIFactory();
+        UIFactory uif = new UIFactory();
         nameField = new JTextField(FIELDLEN);
         nameField.getDocument().addDocumentListener(this);
         activeCheck = uif.checkBox(new ActiveAction(), trans.isActive());

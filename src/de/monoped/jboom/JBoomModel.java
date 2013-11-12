@@ -460,7 +460,7 @@ public class JBoomModel
     {
         DocumentBuilderFactory  factory;
         DocumentBuilder         builder = null;
-        Document                document = null;
+        Document                document;
 
         try
         {

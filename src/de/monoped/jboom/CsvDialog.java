@@ -17,15 +17,23 @@ package de.monoped.jboom;
  * monoped@users.sourceforge.net
  */
 
-import de.monoped.utils.*;
-import de.monoped.swing.*;
-import java.io.*;
-import java.util.*;
-import java.awt.*;
-import java.awt.event.*;
+import de.monoped.swing.UIAction;
+import de.monoped.utils.KeyBundle;
+
 import javax.swing.*;
-import javax.swing.event.*;
-import javax.swing.table.*;
+import javax.swing.table.JTableHeader;
+import javax.swing.table.TableColumn;
+import javax.swing.table.TableColumnModel;
+import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileReader;
+import java.util.ArrayList;
+import java.util.ResourceBundle;
 
 /** Dialog for address import from CSV file */
 
@@ -35,9 +43,7 @@ public class CsvDialog
 {
     static KeyBundle                bundle = (KeyBundle)ResourceBundle.getBundle("de.monoped.jboom.Resources");
 
-    private JButton                 cancelButton;
     private JRadioButton            commaButton, semiButton, tabButton;
-    private JTextArea               linesArea;
     private JCheckBox               skipFirstBox;
     private boolean                 skipFirstLine;
     private int                     separator, tableRow;
@@ -52,9 +58,9 @@ public class CsvDialog
 
     //----------------------------------------------------------------------
 
-    public CsvDialog(Frame owner, File file, String[] valueNames)
+    public CsvDialog(File file, String[] valueNames)
     {
-        super(owner, "CSV", true);
+        super((Frame) null, "CSV", true);
         this.valueNames = valueNames;
 
         setSize(new Dimension(700, 500));
@@ -100,8 +106,8 @@ public class CsvDialog
 
         // set up GUI
 
-        linesArea = new JTextArea(sb.toString());
-        cancelButton = new JButton(new CancelAction());
+        JTextArea linesArea = new JTextArea(sb.toString());
+        new JButton(new CancelAction());
 
         setLayout(new GridBagLayout());
 
@@ -337,8 +343,7 @@ public class CsvDialog
     private boolean fullLine(int k)
     {
         String[]    first = recordList.get(k);
-        int         nvals = first.length,
-                    nempty = 0;
+        int nempty = 0;
 
         for (String val: first)
             if (val.length() == 0)

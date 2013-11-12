@@ -1,10 +1,11 @@
 package de.monoped.utils;
 
 import javax.swing.*;
-import java.awt.event.*;
-import java.util.*;
-import java.util.Arrays.*;
-import java.io.*;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.PrintStream;
+import java.util.Arrays;
+import java.util.Enumeration;
 
 /** Contains static methods that show some system properties. */
 
@@ -17,9 +18,7 @@ public class Defaults
 
     /** Print UI defaults into file "uidefaults.out" */
 
-    static void uiDefaults()
-        throws IOException
-    {
+    static void uiDefaults() {
         try
         {
             System.setOut(new PrintStream(new FileOutputStream("uidefaults.out")));

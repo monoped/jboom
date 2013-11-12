@@ -15,11 +15,13 @@ import de.monoped.swing.Utilities;
 import de.monoped.utils.KeyBundle;
 import de.monoped.utils.Strings;
 import org.w3c.dom.Document;
-import org.w3c.dom.Element;
 import org.xml.sax.InputSource;
 
 import javax.swing.*;
-import javax.swing.event.*;
+import javax.swing.event.PopupMenuEvent;
+import javax.swing.event.PopupMenuListener;
+import javax.swing.event.TreeSelectionEvent;
+import javax.swing.event.TreeSelectionListener;
 import javax.swing.filechooser.FileFilter;
 import javax.swing.tree.DefaultTreeModel;
 import javax.swing.tree.TreePath;
@@ -62,18 +64,36 @@ public class JBoom
     private ConnectionPopupListener connPopupListener;
     private UploadPopupListener uploadPopupListener;
     private JBoomNode jboomRoot;
-    private JMenuItem copyItem, cutItem, editItem, insertItem,
-            newBookmarkItem, newFolderItem, rootItem;
-    private JButton downButton, downloadButton, findButton,
-            ledButton, newMarkButton, newFolderButton,
-            optionsButton, showRootButton, sortButton, upButton, uploadButton;
-    private Action downAction, downloadAction, findAction,
-            enterAction,
-            ledAction, markAction, markAction0, markAction1, folderAction,
-            optionsAction, rootAction, rootDirAction, sortAction,
-            upAction, uploadAction,
-            pasteAction, cutAction, copyAction, editAction;
-    private ActionMap treeActionMap;
+    private JMenuItem copyItem;
+    private JMenuItem insertItem;
+    private JMenuItem newBookmarkItem;
+    private JMenuItem newFolderItem;
+    private JMenuItem rootItem;
+    private JButton downButton;
+    private JButton downloadButton;
+    private JButton ledButton;
+    private JButton newMarkButton;
+    private JButton newFolderButton;
+    private JButton sortButton;
+    private JButton upButton;
+    private JButton uploadButton;
+    private Action downAction;
+    private Action downloadAction;
+    private Action findAction;
+    private Action enterAction;
+    private Action markAction;
+    private Action markAction0;
+    private Action markAction1;
+    private Action folderAction;
+    private Action optionsAction;
+    private Action rootAction;
+    private Action rootDirAction;
+    private Action upAction;
+    private Action uploadAction;
+    private Action pasteAction;
+    private Action cutAction;
+    private Action copyAction;
+    private Action editAction;
     private FindPanel findPanel;
     private GridBagConstraints gbc;
     private JBoomModel model;
@@ -225,7 +245,7 @@ public class JBoom
 
     void composeMail(String addr) {
         String cmd = model.getMailCommand(),
-                errmsg = null;
+                errmsg;
 
         if (cmd != null) {
             // Explicit command given
@@ -407,7 +427,7 @@ public class JBoom
 
         // LED -> about
 
-        ledAction = new UIAction(bundle, "about") {
+        Action ledAction = new UIAction(bundle, "about") {
             public void actionPerformed(ActionEvent e) {
                 showAbout();
             }
@@ -453,7 +473,7 @@ public class JBoom
 
         // sort
 
-        sortAction = new UIAction("sort.png", bundle, "sort") {
+        Action sortAction = new UIAction("sort.png", bundle, "sort") {
             public void actionPerformed(ActionEvent e) {
                 sortNode();
             }
@@ -477,16 +497,16 @@ public class JBoom
 
         uif.setMargin(0, 0, 0, 0);
         ledButton = uif.iconButton(ledAction);
-        optionsButton = uif.button(optionsAction);
+        JButton optionsButton = uif.button(optionsAction);
         newMarkButton = uif.button(markAction);
         newFolderButton = uif.button(folderAction);
         uploadButton = uif.button(uploadAction);
         downloadButton = uif.button(downloadAction);
         upButton = uif.button(upAction);
         downButton = uif.button(downAction);
-        showRootButton = uif.button(rootAction);
+        JButton showRootButton = uif.button(rootAction);
         sortButton = uif.button(sortAction);
-        findButton = uif.button(findAction);
+        JButton findButton = uif.button(findAction);
 
         controlPanel.add(ledButton);
         controlPanel.add(optionsButton);
@@ -517,6 +537,7 @@ public class JBoom
         setActionMap(new JBoomActionMap(getActionMap()));
 
         tree.setInputMap(WHEN_ANCESTOR_OF_FOCUSED_COMPONENT, new JBoomInputMap(tree.getInputMap()));
+        ActionMap treeActionMap;
         tree.setActionMap(treeActionMap = new JBoomActionMap(tree.getActionMap()));
 
         tree.setModel(null);
@@ -526,11 +547,11 @@ public class JBoom
         treePopupMenu = new JPopupMenu();
         treePopupMenu.addPopupMenuListener(this);
 
-        editItem = new JMenuItem(editAction);
+        JMenuItem editItem = new JMenuItem(editAction);
         insertItem = new JMenuItem(pasteAction);
         insertItem.setEnabled(false);
         copyItem = new JMenuItem(copyAction);
-        cutItem = new JMenuItem(cutAction);
+        JMenuItem cutItem = new JMenuItem(cutAction);
         newBookmarkItem = new JMenuItem(markAction);
         newFolderItem = new JMenuItem(folderAction);
         rootItem = new JMenuItem(rootDirAction);
@@ -573,7 +594,7 @@ public class JBoom
      */
 
     private void createTreeModel(Document document) {
-        jboomRoot = new JBoomNode((Element) document.getDocumentElement());
+        jboomRoot = new JBoomNode(document.getDocumentElement());
         treeModel = new DefaultTreeModel(jboomRoot);
         tree.setModel(treeModel);
     }
@@ -630,8 +651,7 @@ public class JBoom
 
         // change selection
 
-        if (selectNode != null)
-            tree.setSelectionPath(new TreePath(selectNode.getPath()));
+        tree.setSelectionPath(new TreePath(selectNode.getPath()));
 
         informListener();
     }
@@ -719,7 +739,7 @@ public class JBoom
             ok = downloadRemote(index);
 
             if (!ok) {
-                Transport transport = (Transport) model.getConnections().get(index);
+                Transport transport = model.getConnections().get(index);
 
                 model.getPasswordManager().remove(transport.getSpec());
 
@@ -779,7 +799,7 @@ public class JBoom
             Document document;
             BufferedReader bufread = new BufferedReader(new FileReader(localFile));
 
-            document = (Document) builder.parse(new InputSource(bufread));
+            document = builder.parse(new InputSource(bufread));
             bufread.close();
             createTreeModel(document);
             initialized = true;
@@ -798,7 +818,7 @@ public class JBoom
      */
 
     boolean downloadRemote(int index) {
-        Transport transport = (Transport) model.getConnections().get(index);
+        Transport transport = model.getConnections().get(index);
 
         String passwd = null;
 
@@ -841,8 +861,8 @@ public class JBoom
                 // Parse XML
 
                 StringReader reader = new StringReader(xml);
-                Document doc = (Document) builder.parse(new InputSource(reader));
-                JBoomNode otherRoot = new JBoomNode((Element) doc.getDocumentElement());
+                Document doc = builder.parse(new InputSource(reader));
+                JBoomNode otherRoot = new JBoomNode(doc.getDocumentElement());
 
                 if (!initialized || jboomRoot == null)
                     jboomRoot = otherRoot;
@@ -1113,7 +1133,7 @@ public class JBoom
                 bundle.getText("mailText")
         };
 
-        CsvDialog dia = new CsvDialog(null, chooser.getSelectedFile(), names);
+        CsvDialog dia = new CsvDialog(chooser.getSelectedFile(), names);
 
         dia.setVisible(true);
 
@@ -1330,8 +1350,7 @@ public class JBoom
 
             if (parent == jboomRoot)
                 return;
-        } else
-            last = null;
+        }
 
         if (parent == jboomRoot)
             return;
@@ -1432,7 +1451,6 @@ public class JBoom
 
     public void newBookmark(boolean clip) {
         TreeLocation loc = new TreeLocation(tree);
-        boolean isMail = false;
 
         // URL is initialized with content of system tray
 
@@ -1650,8 +1668,6 @@ public class JBoom
 
     /**
      * Show preferences dialog and set properties.
-     *
-     * @return true if user said "OK"
      */
 
     public void setOptions() {
@@ -2073,9 +2089,6 @@ public class JBoom
     }
 
     //----------------------------------------------------------------------
-
-    public void treeWillCollapse(TreeExpansionEvent e) {
-    }
 
     @Override
     public void popupMenuWillBecomeVisible(PopupMenuEvent e) {

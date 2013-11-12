@@ -29,10 +29,10 @@ import java.text.*;
 
 class HTMLImporter
 {
-    private static int  I_URL = 0, I_NAME = 1, I_TEXT = 2;
+    private static int  I_URL = 0;
+    private static int I_NAME = 1;
     static KeyBundle    bundle = (KeyBundle)ResourceBundle.getBundle("de.monoped.jboom.Resources");
 
-    private Reader      in;
     private String      text;
     private int         index;
 
@@ -40,8 +40,6 @@ class HTMLImporter
 
     HTMLImporter(Reader in)
     {
-        this.in = in;
-
         Pattern pattern = Pattern.compile("\\p{Cntrl}"); 
 
         // Read HTML completely into string
@@ -97,9 +95,7 @@ class HTMLImporter
 
     /** Find and return one of the supplied tags or null if none found */
 
-    private String findTag(String... tags)
-        throws ParseException
-    {
+    private String findTag(String... tags) {
         for (; index < text.length() && (index = text.indexOf("<", index)) >= 0; ++index)
             for (String tag: tags)
                 if (text.regionMatches(true, index, tag, 0, tag.length()))
@@ -265,19 +261,20 @@ class HTMLImporter
 
         String dd = nextTag();
 
+        int i_TEXT = 2;
         if (dd.equals("DD"))
         {
             index = find(">", index) + 1;
-            urlName[I_TEXT] = getText();
+            urlName[i_TEXT] = getText();
         }
         else
-            urlName[I_TEXT] = null;
+            urlName[i_TEXT] = null;
 
         if (urlName[I_URL] == null)
         {
             // folder
 
-            JBoomNode               node = new JBoomNode(urlName[I_NAME], urlName[I_TEXT]);
+            JBoomNode               node = new JBoomNode(urlName[I_NAME], urlName[i_TEXT]);
             ArrayList<JBoomNode>    list = readList();
 
             if (list != null)
@@ -291,7 +288,7 @@ class HTMLImporter
                 return null;
         }
         else
-            return new JBoomNode(urlName[I_NAME], urlName[I_URL], urlName[I_TEXT], false);
+            return new JBoomNode(urlName[I_NAME], urlName[I_URL], urlName[i_TEXT], false);
     }
 
 }

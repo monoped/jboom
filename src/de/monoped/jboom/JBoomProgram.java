@@ -17,15 +17,17 @@ package de.monoped.jboom;
  * monoped@users.sourceforge.net
  */
 
+import de.monoped.utils.Getopt;
+import de.monoped.utils.KeyBundle;
+import de.monoped.utils.Strings;
+
+import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
-import java.io.*;
-import java.net.*;
-import java.util.*;
-import java.util.prefs.*;
-import javax.imageio.*;
-import javax.swing.*;
-import de.monoped.utils.*;
+import java.io.File;
+import java.net.URI;
+import java.util.ResourceBundle;
+import java.util.prefs.Preferences;
 
 /** JBoom program class. */
 
@@ -71,13 +73,13 @@ public class JBoomProgram
                 }
                 catch (AWTException ex)
                 {
-                    if (jboom.isDebug())
+                    if (JBoom.isDebug())
                         ex.printStackTrace();
 
                     return;
                 }
         }
-        else if (jboom.isDebug())
+        else if (JBoom.isDebug())
             System.out.println("tray not supported");
 
         jboom.addActionListener(this);

@@ -244,7 +244,6 @@ public class Password
 
 		transpose(p, swap, 64);
 		transpose(p, finalTr, 64);
-		blck = p;
 	}
 
     //----------------------------------------------------------------------

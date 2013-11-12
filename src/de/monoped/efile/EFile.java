@@ -31,29 +31,29 @@ public interface EFile
      *  @param comp Component to add
      */
 
-    void            addPath(String comp) throws IOException;
+    void            addPath(String comp);
 
     /** Close the file. */
 
-    void            close() throws IOException;
+    void            close();
 
     /** Copy an input stream into the file.
      *
      *  @param  in  Stream is read and copied into the file.
      */
 
-    void            copyFrom(InputStream in) throws IOException, FileNotFoundException;
+    void            copyFrom(InputStream in);
 
     /** Copy a normal file into the file.
      *
      *  @param  src  File to be copied.
      */
 
-    void            copyFrom(File src) throws IOException, FileNotFoundException;
+    void            copyFrom(File src);
 
     /** Delete the file. If the file is a directory, it must be empty. */
 
-    void            delete() throws IOException;
+    void            delete();
 
     /** Delete the file. If it is a directory and the parameter is true, 
      *  delete the directory recursively.
@@ -61,11 +61,11 @@ public interface EFile
      * @param recursive     If true, delete a directory recursively.
      */
 
-    void            delete(boolean recursive) throws IOException;
+    void            delete(boolean recursive);
 
     /** Check if file exists. */
 
-    boolean         exists() throws IOException;
+    boolean         exists();
 
     /** Return the file base. */
 
@@ -73,7 +73,7 @@ public interface EFile
 
     /** Return file content as array of bytes. */
 
-    byte[]          getBytes() throws IOException, FileNotFoundException;
+    byte[]          getBytes();
 
     /** Return the name (the last path component). */
 
@@ -81,11 +81,11 @@ public interface EFile
 
     /** Open an input stream that reads from the file and return it. */
 
-    InputStream     getInputStream() throws IOException, FileNotFoundException;
+    InputStream     getInputStream();
 
     /** Open an output stream that writes the file and return it. */
 
-    OutputStream    getOutputStream() throws IOException, FileNotFoundException;
+    OutputStream    getOutputStream();
 
     /** Get parent path. */
 
@@ -97,26 +97,26 @@ public interface EFile
 
     /** Check if file is a directory. */
 
-    boolean         isDirectory() throws IOException;
+    boolean         isDirectory();
 
     /** Return contents of a directory as array of file names. */
 
-    String[]        list() throws IOException;
+    String[]        list();
 
     /** Return filtered contents of a directory as array of file names. 
      *
      *  @param filter   File filter
      */
 
-    String[]        list(FilenameFilter filter) throws IOException;
+    String[]        list(FilenameFilter filter);
 
     /** Return an iterator for file names in this directory. */
 
-    Iterator        iterator() throws IOException;
-    Iterator        iterator(FilenameFilter filter) throws IOException;
-    boolean         mkdirs() throws IOException;
+    Iterator        iterator();
+    Iterator        iterator(FilenameFilter filter);
+    boolean         mkdirs();
 
-    void            putBytes(byte[] bytes) throws IOException, FileNotFoundException;
+    void            putBytes(byte[] bytes);
     void            setPath(String path);
     void            setName(String name);
     String          toString();

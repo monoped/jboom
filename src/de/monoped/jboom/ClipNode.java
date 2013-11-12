@@ -129,15 +129,6 @@ class ClipNode
 
     //----------------------------------------------------------------------
 
-    /** Return the node. */
-
-    JBoomNode getNode()
-    {
-        return node;
-    }
-    
-    //----------------------------------------------------------------------
-
     /** Return number of children. */
     
     int getSize()
@@ -147,12 +138,5 @@ class ClipNode
 
     //----------------------------------------------------------------------
 
-    /** Check if this node is a leaf (bookmark). */
-    
-    boolean isLeaf()
-    {
-        return node.isLeaf();
-    }
-    
 }
 

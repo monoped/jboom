@@ -1,10 +1,8 @@
 package de.monoped.swing;
 
-import java.awt.event.*;
-import java.text.*;
 import javax.swing.*;
-import javax.swing.event.*;
-import javax.swing.text.*;
+import javax.swing.text.DefaultFormatterFactory;
+import java.text.ParseException;
 
 public class DoubleEditor
     extends JFormattedTextField
@@ -56,12 +54,6 @@ public class DoubleEditor
     }
 
     //----------------------------------------------------------------------
-    
-    public void commitEdit()
-        throws ParseException
-    {
-        super.commitEdit();
-    }
 
 }
 

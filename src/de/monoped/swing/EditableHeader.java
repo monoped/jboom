@@ -1,12 +1,17 @@
 package de.monoped.swing;
 
-import java.awt.*;
-import java.awt.event.*;
-import java.util.*;
 import javax.swing.*;
-import javax.swing.event.*;
-import javax.swing.plaf.basic.*;
-import javax.swing.table.*;
+import javax.swing.event.CellEditorListener;
+import javax.swing.event.ChangeEvent;
+import javax.swing.event.MouseInputListener;
+import javax.swing.plaf.basic.BasicTableHeaderUI;
+import javax.swing.table.JTableHeader;
+import javax.swing.table.TableCellEditor;
+import javax.swing.table.TableColumn;
+import javax.swing.table.TableColumnModel;
+import java.awt.*;
+import java.awt.event.MouseEvent;
+import java.util.EventObject;
 
 public class EditableHeader
     extends JTableHeader 
@@ -126,11 +131,11 @@ public class EditableHeader
 
         // firePropertyChange
 
-        if (oldEditor != null && oldEditor instanceof TableCellEditor) 
-            ((TableCellEditor)oldEditor).removeCellEditorListener((CellEditorListener)this);
+        if (oldEditor != null)
+            oldEditor.removeCellEditorListener(this);
         
-        if (newEditor != null && newEditor instanceof TableCellEditor)
-            ((TableCellEditor) newEditor).addCellEditorListener((CellEditorListener)this);
+        if (newEditor != null)
+            newEditor.addCellEditorListener(this);
     }
 
     //----------------------------------------------------------------------

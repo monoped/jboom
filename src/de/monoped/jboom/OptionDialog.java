@@ -17,14 +17,20 @@ package de.monoped.jboom;
  * monoped@users.sourceforge.net
  */
 
-import de.monoped.swing.*;
-import de.monoped.utils.*;
-import java.awt.*;
-import java.awt.event.*;
-import java.io.*;
-import java.util.*;
+import de.monoped.swing.UIAction;
+import de.monoped.swing.UIFactory;
+import de.monoped.utils.KeyBundle;
+
 import javax.swing.*;
-import javax.swing.event.*;
+import javax.swing.event.ListSelectionEvent;
+import javax.swing.event.ListSelectionListener;
+import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
+import java.util.ArrayList;
+import java.util.ResourceBundle;
 
 /** Modal dialog for jboom options. */
 
@@ -37,21 +43,19 @@ public class OptionDialog
 
     private JBoom                   jboom;
     private JBoomModel              model;
-    private JList                   connectionList;
-    private JScrollPane             scroll;
-    private DefaultListModel        listModel;
+    private JList<Object> connectionList;
+    private DefaultListModel<Object> listModel;
     private JPanel                  centerPanel;
     private TransportUI             transportUI;
     private JTextField              localFileField, mailCommandField, urlCommandField;
     private UIAction                okAction;
-    private JButton                 cancelButton, okButton, 
-                                    newButton;
-    private JCheckBox               askSaveCheck,
-                                    folderFirstCheck,
-                                    sortRecursiveCheck,
-                                    startMinimizedCheck,
-                                    toTrayCheck,
-                                    positionCheck;
+    private JButton okButton;
+    private JButton newButton;
+    private JCheckBox folderFirstCheck;
+    private JCheckBox sortRecursiveCheck;
+    private JCheckBox startMinimizedCheck;
+    private JCheckBox toTrayCheck;
+    private JCheckBox positionCheck;
     private JPopupMenu              newPop;
     private boolean                 listenSelection;
     private UIFactory               uif;
@@ -145,11 +149,9 @@ public class OptionDialog
             }
         });
 
-        askSaveCheck = new JCheckBox(new UIAction(bundle, "askSave", model.isAskSave())
-        {
-            public void actionPerformed(ActionEvent e)
-            {
-                model.setAskSave((Boolean)getValue(SELECTED_KEY));
+        JCheckBox askSaveCheck = new JCheckBox(new UIAction(bundle, "askSave", model.isAskSave()) {
+            public void actionPerformed(ActionEvent e) {
+                model.setAskSave((Boolean) getValue(SELECTED_KEY));
             }
         });
 
@@ -209,10 +211,8 @@ public class OptionDialog
             });
         }
 
-        cancelButton = new JButton(new UIAction(bundle, "cancel")
-        {
-            public void actionPerformed(ActionEvent e)
-            {
+        JButton cancelButton = new JButton(new UIAction(bundle, "cancel") {
+            public void actionPerformed(ActionEvent e) {
                 quit(false);
             }
         });
@@ -304,7 +304,7 @@ public class OptionDialog
 
     private JScrollPane createConnectionList()
     {
-        listModel = new DefaultListModel();
+        listModel = new DefaultListModel<Object>();
 
         for (Transport trans: model.getConnections())
         {
@@ -313,7 +313,7 @@ public class OptionDialog
             listModel.addElement(text);
         }
 
-        connectionList = new JList(listModel);
+        connectionList = new JList<Object>(listModel);
         connectionList.setVisibleRowCount(3);
         connectionList.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
         connectionList.addListSelectionListener(new ConnSelectionListener());
@@ -354,7 +354,7 @@ public class OptionDialog
         box.add(Box.createHorizontalStrut(5));
         box.add(new JLabel(bundle.getText("connections")));
         box.add(Box.createHorizontalStrut(15));
-        box.add(scroll = createConnectionList());       
+        box.add(createConnectionList());
         box.add(Box.createHorizontalStrut(15));
 
         uif.setMargin(0, 2, 0, 2);

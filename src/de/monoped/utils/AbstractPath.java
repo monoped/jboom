@@ -1,18 +1,13 @@
 package de.monoped.utils;
 
-import java.io.*;
-import java.util.*;
+import java.io.File;
+import java.io.IOException;
 
 public class AbstractPath
 {
     private String[]    components;
     private String      root;
     private String      separator;
-
-    //----------------------------------------------------------------------
-
-    protected AbstractPath()
-    { }
 
     //----------------------------------------------------------------------
 

@@ -1,15 +1,20 @@
 package de.monoped.swing;
 
-import java.awt.*;
-import java.awt.event.*;
-import java.io.*;
-import java.net.*;
-import java.util.*;
 import javax.swing.*;
-import javax.swing.event.*;
-
-import javax.swing.text.*;
-import javax.swing.text.html.*;
+import javax.swing.event.HyperlinkEvent;
+import javax.swing.event.HyperlinkListener;
+import javax.swing.text.AttributeSet;
+import javax.swing.text.Element;
+import javax.swing.text.html.HTML;
+import javax.swing.text.html.HTMLEditorKit;
+import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.KeyEvent;
+import java.io.*;
+import java.net.URI;
+import java.net.URL;
+import java.util.ArrayList;
+import java.util.HashMap;
 
 /** Help dialog containing the help text, and buttons for moving
  *  forward an backward in the list of already visited pages.
@@ -19,15 +24,12 @@ import javax.swing.text.html.*;
 public class HelpDialog
     extends JDialog
 {
-    private Action                  nextAction, okAction, prevAction;
     private ArrayList<String>       pageList;
     private boolean                 externalLinkTip, internalLinkTip;
     private HashMap<String, String> pageMap;
     private int                     index, lastIndex;
     private JButton                 prevButton, nextButton;
     private JEditorPane             htmlPane;
-    private JScrollPane             scroll;
-    private String                  title;
     private ClassLoader             loader = getClass().getClassLoader();
  
     private static HelpDialog       helpDialog;
@@ -37,7 +39,6 @@ public class HelpDialog
     private HelpDialog(JFrame parent, String title)
     {
         super(parent);
-        this.title = title;
         setTitle(title);
 
         setModalityType(Dialog.ModalityType.MODELESS);
@@ -54,10 +55,10 @@ public class HelpDialog
         htmlPane.addHyperlinkListener(new HyperListener());
         htmlPane.setAutoscrolls(true);
 
-        nextAction = new NextAction();
+        Action nextAction = new NextAction();
         nextButton = new JButton(nextAction);
-        okAction = new OKAction();
-        prevAction = new PrevAction();
+        Action okAction = new OKAction();
+        Action prevAction = new PrevAction();
         prevButton = new JButton(prevAction);
 
         Box footPanel = new Box(BoxLayout.X_AXIS);
@@ -69,7 +70,7 @@ public class HelpDialog
         footPanel.add(Box.createHorizontalStrut(20));
         footPanel.add(nextButton);
         footPanel.add(Box.createHorizontalGlue());
-        add(scroll = new JScrollPane(htmlPane));
+        add(new JScrollPane(htmlPane));
         add(footPanel, BorderLayout.SOUTH);
 
         ActionMap   actionMap = new ActionMap();
@@ -85,14 +86,11 @@ public class HelpDialog
 
     /** Create the dialog
      *
-     *  @param parent   parent frame
-     *  @param title    Dialog title
      */
 
-    public static HelpDialog createHelpDialog(JFrame parent, String title)
+    public static HelpDialog createHelpDialog()
     {
-        helpDialog = new HelpDialog(parent, title);
-        return helpDialog;
+        return new HelpDialog(null, "help");
     }
 
     //----------------------------------------------------------------------
@@ -138,7 +136,7 @@ public class HelpDialog
         while ((line = reader.readLine()) != null)
             if (! line.startsWith("#"))
             {
-                int             from = 0, index = 0, indexAlt = 0;
+                int             from = 0, index, indexAlt = 0;
 
                 // Search line for src="reso: 
 
@@ -217,8 +215,6 @@ public class HelpDialog
         }
 
         String          pageText = pageMap.get(name);
-        Reader          textReader;
-        String          line;
 
         try
         {

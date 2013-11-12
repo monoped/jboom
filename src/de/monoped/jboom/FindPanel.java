@@ -17,14 +17,21 @@ package de.monoped.jboom;
  * monoped@users.sourceforge.net
  */
 
-import de.monoped.swing.*;
-import de.monoped.utils.*;
-import java.awt.*;
-import java.awt.event.*;
-import java.util.*;
+import de.monoped.swing.UIAction;
+import de.monoped.swing.UIFactory;
+import de.monoped.utils.KeyBundle;
+
 import javax.swing.*;
-import javax.swing.event.*;
-import javax.swing.tree.*;
+import javax.swing.event.DocumentEvent;
+import javax.swing.event.DocumentListener;
+import javax.swing.event.TreeSelectionEvent;
+import javax.swing.event.TreeSelectionListener;
+import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.FocusEvent;
+import java.awt.event.FocusListener;
+import java.util.ResourceBundle;
 
 /** The find panel in the south of the main panel. */
 
@@ -38,12 +45,12 @@ class FindPanel
     private JCheckBox           nameCheck,
                                 urlCheck,
                                 caseCheck;
-    private JButton             nextButton, prevButton, closeButton;
+    private JButton             nextButton;
+    private JButton prevButton;
     private JBoom               jboom;
     private JBoomNode           nodeFound;
     private boolean             findInName, findInURL, found, caseSensitive;
     private JTextField          urlField;
-    private UIFactory           uif;
 
     //----------------------------------------------------------------------
 
@@ -55,7 +62,7 @@ class FindPanel
     FindPanel(JBoom jboom)
     {
         this.jboom = jboom;
-        uif = new UIFactory();
+        UIFactory uif = new UIFactory();
 
         // selectiong a tree node defines start of search
         
@@ -128,7 +135,7 @@ class FindPanel
                 quit();
             }
         };
-        closeButton = uif.iconButton(closeAction);
+        JButton closeButton = uif.iconButton(closeAction);
 
         // URL field
 
@@ -255,7 +262,7 @@ class FindPanel
                 node = (JBoomNode)node.getNextNode();
 
                 if (node == null)
-                    node = (JBoomNode)jboom.getRootNode();
+                    node = jboom.getRootNode();
             }
             else
             {
@@ -300,15 +307,12 @@ class FindPanel
                 return;
         }
 
-        if (found)
-        {
-            jboom.selectNode(nodeFound = node);
+        jboom.selectNode(nodeFound = node);
 
-            if (node.isLeaf())
-            {
-                urlField.setText(node.getURL());
-                urlField.setCaretPosition(0);
-            }
+        if (node.isLeaf())
+        {
+            urlField.setText(node.getURL());
+            urlField.setCaretPosition(0);
         }
     }
 

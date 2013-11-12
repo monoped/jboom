@@ -29,7 +29,6 @@ class FtpTransportUI
     extends TransportUI
 {
     private JTextField          hostField, userField, passwdField, fileField;
-    private GridBagConstraints  gbc;
     private FtpTransport        trans;
     private JPanel              panel;
     
@@ -49,7 +48,7 @@ class FtpTransportUI
         panel.setLayout(new GridBagLayout());
         panel.setBorder(BorderFactory.createEtchedBorder());
 
-        gbc = new GridBagConstraints();  
+        GridBagConstraints gbc = new GridBagConstraints();
 
         gbc.gridx = gbc.gridy = 0;
         gbc.insets = new Insets(5, 5, 5, 5);

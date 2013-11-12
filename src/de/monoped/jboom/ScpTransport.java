@@ -67,7 +67,7 @@ class ScpTransport
 
     private boolean authenticate(String passwd)
     {
-        boolean ok = false;
+        boolean ok;
 
         conn = new Connection(host);
     

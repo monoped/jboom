@@ -28,7 +28,6 @@ class HttpTransportUI
     extends TransportUI
 {
     private JTextField          recvField, sendField, passwdField;
-    private GridBagConstraints  gbc;
     private HttpTransport       trans;
     private JPanel              panel;
     
@@ -48,7 +47,7 @@ class HttpTransportUI
         panel.setLayout(new GridBagLayout());
         panel.setBorder(BorderFactory.createEtchedBorder());
 
-        gbc = new GridBagConstraints();  
+        GridBagConstraints gbc = new GridBagConstraints();
 
         gbc.gridx = gbc.gridy = 0;
         gbc.insets = new Insets(5, 5, 5, 5);

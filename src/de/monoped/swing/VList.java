@@ -7,8 +7,7 @@ import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 import java.awt.*;
 import java.awt.event.*;
-import java.util.ArrayList;
-import java.util.Iterator;
+import java.util.*;
 
 /** Liste in einer Scrollpane. Einfacher Klick auf Item markiert,
  *  doppelter schickt ActionEvent an Listener mit Zeilen-Komponente als
@@ -23,9 +22,9 @@ public class VList
     private boolean                 selectable;
     private int                     marked;
     private Color                   selectionColor;
-    private java.util.List          zeilen;
+    private java.util.List<JComponent> zeilen;
     private ActionListener          actionListener;
-    private ArrayList               selectionListener;
+    private ArrayList<ListSelectionListener> selectionListener;
     private JPanel                  panel;
 
     //----------------------------------------------------------------------
@@ -69,7 +68,7 @@ public class VList
      *  @param  selectable  wenn true, können Zeilen markiert werden.
      */
 
-    public VList(ArrayList zeilen, boolean selectable)
+    public VList(ArrayList<JComponent> zeilen, boolean selectable)
     {
         this.zeilen = zeilen;
         this.selectable = selectable;
@@ -110,7 +109,7 @@ public class VList
      *  @param  zeilen      ArrayList mit JComponents für die Zeilen.
      */
 
-    public VList(ArrayList zeilen)
+    public VList(ArrayList<JComponent> zeilen)
     {
         this(zeilen, true);
     }
@@ -119,7 +118,7 @@ public class VList
 
     public VList(boolean selectable)
     {
-        this(new ArrayList(), selectable);
+        this(new ArrayList<JComponent>(), selectable);
     }
 
     //----------------------------------------------------------------------
@@ -161,7 +160,7 @@ public class VList
     public void addListSelectionListener(ListSelectionListener lisel)
     {
         if (selectionListener == null)
-            selectionListener = new ArrayList();
+            selectionListener = new ArrayList<ListSelectionListener>();
 
         selectionListener.add(lisel);   
     }
@@ -193,7 +192,7 @@ public class VList
 
     public JComponent getSelectedItem()
     {
-        return marked >= 0 ? (JComponent)zeilen.get(marked) : null;
+        return marked >= 0 ? zeilen.get(marked) : null;
     }
     
     //----------------------------------------------------------------------
@@ -217,8 +216,8 @@ public class VList
         boolean ok = false;
         int     i = 0;
         
-        for (Iterator it = zeilen.iterator(); it.hasNext(); i++)
-            if ((ok = ((Component)it.next()).getBounds().contains(p)))
+        for (Iterator<JComponent> it = zeilen.iterator(); it.hasNext(); i++)
+            if ((ok = (it.next()).getBounds().contains(p)))
                 break;
                     
         if (! ok)
@@ -260,7 +259,7 @@ public class VList
             return;
 
         int         indexNeu = index >= zeilen.size() - 1 ? 0 : index + 1;
-        JComponent  comp = (JComponent)zeilen.remove(index);
+        JComponent  comp = zeilen.remove(index);
 
         zeilen.add(indexNeu, comp);
         
@@ -285,7 +284,7 @@ public class VList
             return;
 
         int         indexNeu = index == 0 ? zeilen.size() - 1 : index - 1;
-        JComponent  comp = (JComponent)zeilen.remove(index);
+        JComponent  comp = zeilen.remove(index);
 
         zeilen.add(indexNeu, comp);
         panel.remove(index);
@@ -339,8 +338,8 @@ public class VList
 
         ListSelectionEvent lise = new ListSelectionEvent(zeilen.get(marked), marked, marked, false);
 
-        for (Iterator it = selectionListener.iterator(); it.hasNext(); )
-            ((ListSelectionListener)it.next()).valueChanged(lise);
+        for (Iterator<ListSelectionListener> it = selectionListener.iterator(); it.hasNext(); )
+            (it.next()).valueChanged(lise);
     }
 
     //----------------------------------------------------------------------
@@ -417,7 +416,7 @@ public class VList
 
         if (marked >= 0 && marked != index)
         {
-            comp = (Component)zeilen.get(marked);
+            comp = zeilen.get(marked);
             comp.setBackground(getBackground());
             setBg(comp, getBackground());
         }
@@ -426,7 +425,7 @@ public class VList
 
         if (marked >= 0)
         {
-            comp = (Component)zeilen.get(marked);
+            comp = zeilen.get(marked);
             comp.setBackground(selectionColor);
             setBg(comp, selectionColor);
             panel.scrollRectToVisible(comp.getBounds());
@@ -480,9 +479,9 @@ public class VList
 
         if (zeilen != null)
         {
-            for (Iterator it = zeilen.iterator(); it.hasNext(); )
+            for (Iterator<JComponent> it = zeilen.iterator(); it.hasNext(); )
             {
-                Component comp = (Component)it.next();
+                Component comp = it.next();
 
                 comp.setBackground(bgcolor);
                 setBg(comp, bgcolor);
@@ -513,7 +512,7 @@ public class VList
 
     //----------------------------------------------------------------------
 
-    public void setItems(ArrayList zeilen)
+    public void setItems(ArrayList<JComponent> zeilen)
     {
         panel.removeAll();
 
@@ -522,9 +521,9 @@ public class VList
 
         if (zeilen != null)
         {
-            for (Iterator it = zeilen.iterator(); it.hasNext(); )
+            for (Iterator<JComponent> it = zeilen.iterator(); it.hasNext(); )
             {
-                JComponent comp = (JComponent)it.next();
+                JComponent comp = it.next();
                 
                 panel.add(comp);
                 comp.setBackground(getBackground());

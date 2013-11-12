@@ -32,7 +32,6 @@ class FilePanel
 {
     static KeyBundle        bundle = (KeyBundle)ResourceBundle.getBundle("de.monoped.jboom.Resources");
 
-    private JButton         fileButton;
     private JTextField      fileField;
     private JFileChooser    chooser;
 
@@ -48,7 +47,7 @@ class FilePanel
 
         fileField = new JTextField(30);
         fileField.setText(file.getPath());
-        fileButton = new JButton(bundle.getText("browse"));
+        JButton fileButton = new JButton(bundle.getText("browse"));
         fileButton.setActionCommand("browse");
         fileButton.addActionListener(this);
 

@@ -17,14 +17,18 @@ package de.monoped.jboom;
  * monoped@users.sourceforge.net
  */
 
-import de.monoped.utils.*;
-import de.monoped.swing.*;
+import de.monoped.swing.RunWait;
+import de.monoped.utils.DOMOut;
+import de.monoped.utils.DOMUtils;
+import de.monoped.utils.KeyBundle;
+import de.monoped.utils.Strings;
+import org.w3c.dom.Element;
+
 import java.io.*;
-import java.net.*;
-import java.util.concurrent.*;
-import java.util.*;
-import javax.swing.*;
-import org.w3c.dom.*;
+import java.net.HttpURLConnection;
+import java.net.URL;
+import java.net.URLEncoder;
+import java.util.ResourceBundle;
 
 /** Http connection. */
 
@@ -71,7 +75,7 @@ class HttpTransport
 
     /** Append XML representation of this connection to a Buffer. 
      *
-     *  @param  buf     The string buffer to append to.
+     *  @param  out     The string buffer to append to.
      */
     
     void appendXML(DOMOut out)
@@ -230,8 +234,6 @@ class HttpTransport
             urlstr = Strings.replaceString(sendURL, JBoom.PASSWD_TOKEN, passwd);
 
         Uploader    uploader = new Uploader(urlstr, s);
-        boolean     ok = false;
-        String      message;
 
         try
         {

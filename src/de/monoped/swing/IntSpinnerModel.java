@@ -1,15 +1,16 @@
 package de.monoped.swing;
 
-import java.awt.event.*;
-import java.util.*;
 import javax.swing.*;
-import javax.swing.event.*;
+import javax.swing.event.ChangeEvent;
+import javax.swing.event.ChangeListener;
+import java.util.ArrayList;
+import java.util.Iterator;
 
 public class IntSpinnerModel
     implements SpinnerModel
 {
     int             wert, min, max;
-    ArrayList       listener;
+    ArrayList<ChangeListener> listener;
 
     //----------------------------------------------------------------------
 
@@ -18,7 +19,7 @@ public class IntSpinnerModel
         this.wert = wert;
         this.min = min;
         this.max = max;
-        listener = new ArrayList();
+        listener = new ArrayList<ChangeListener>();
     }
 
     //----------------------------------------------------------------------
@@ -59,8 +60,8 @@ public class IntSpinnerModel
         {
             ChangeEvent e = new ChangeEvent(this);
                 
-            for (Iterator it = listener.iterator(); it.hasNext(); )
-                ((ChangeListener)it.next()).stateChanged(e);
+            for (Iterator<ChangeListener> it = listener.iterator(); it.hasNext(); )
+                (it.next()).stateChanged(e);
         }
     }
 

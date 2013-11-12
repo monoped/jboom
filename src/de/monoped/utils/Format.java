@@ -124,8 +124,8 @@ public class Format
             return s;
 
         StringBuffer    b = new StringBuffer(lng);
-        int             links, rechts;
-        
+        int             links;
+
         if (align == LEFT)
             links = 0;
         else if (align == CENTER)

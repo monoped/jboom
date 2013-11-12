@@ -17,15 +17,15 @@ package de.monoped.jboom;
  * monoped@users.sourceforge.net
  */
 
-import de.monoped.efile.*;
-import de.monoped.utils.*;
-import de.monoped.swing.*;
-import java.awt.*;
-import java.awt.event.*;
+import de.monoped.swing.UIAction;
+import de.monoped.utils.KeyBundle;
+
 import javax.swing.*;
-import javax.swing.event.*;
-import javax.swing.text.*;
-import java.util.*;
+import javax.swing.event.DocumentEvent;
+import javax.swing.event.DocumentListener;
+import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.util.ResourceBundle;
 
 /** Dialog for editing a tree entry (bookmark or folder). */
 
@@ -35,46 +35,13 @@ class BookmarkDialog
 {
     static KeyBundle        bundle = (KeyBundle)ResourceBundle.getBundle("de.monoped.jboom.Resources");
 
-    private JButton         okButton, cancelButton;
+    private JButton         okButton;
     private JTextField      nameField, addrField;
     private JTextArea       textArea;
     private JLabel          urlLabel, iconLabel;
-    private boolean         confirmed, nameOK, urlOK;
+    private boolean         confirmed;
     private JBoomNode       node, parent;
     private String          oldName, oldAddr;
-
-    //----------------------------------------------------------------------
-
-    private void fix(final JTextComponent comp)
-    {
-        comp.addMouseListener(new MouseListener()
-        {
-            public void mouseClicked(MouseEvent e)
-            {
-                comp.requestFocus();   
-            }
-
-            public void mouseEntered(MouseEvent e)
-            {
-                comp.requestFocus();  
-            }
-
-            public void mouseExited(MouseEvent e)
-            {
-                comp.requestFocus();  
-            }
-
-            public void mousePressed(MouseEvent e)
-            {
-                comp.requestFocus();  
-            }
-
-            public void mouseReleased(MouseEvent e)
-            {
-                comp.requestFocus();  
-            }
-        });
-    }
 
     //----------------------------------------------------------------------
 
@@ -201,12 +168,9 @@ class BookmarkDialog
             }
         });
 
-        cancelButton = new JButton(new UIAction(bundle, "cancel")
-        {
-            public void actionPerformed(ActionEvent e)
-            {
-                if (oldName != null)
-                {
+        JButton cancelButton = new JButton(new UIAction(bundle, "cancel") {
+            public void actionPerformed(ActionEvent e) {
+                if (oldName != null) {
                     JBoomNode node = BookmarkDialog.this.node;
 
                     node.setName(oldName);

@@ -17,13 +17,15 @@ package de.monoped.jboom;
  * monoped@users.sourceforge.net
  */
 
-import de.monoped.utils.*;
-import de.monoped.swing.*;
-import com.enterprisedt.net.ftp.*;
-import java.io.*;
-import java.util.*;
-import java.util.concurrent.*;
-import org.w3c.dom.*;
+import com.enterprisedt.net.ftp.FTPClient;
+import com.enterprisedt.net.ftp.FTPTransferType;
+import de.monoped.swing.RunWait;
+import de.monoped.utils.DOMOut;
+import de.monoped.utils.DOMUtils;
+import de.monoped.utils.KeyBundle;
+import org.w3c.dom.Element;
+
+import java.util.ResourceBundle;
 
 /** Ftp connection. */
 
@@ -71,7 +73,7 @@ class FtpTransport
 
     /** Append XML representation of this connection to a Buffer. 
      *
-     *  @param  buf     The string buffer to append to.
+     *  @param  out     The string buffer to append to.
      */
     
     void appendXML(DOMOut out)

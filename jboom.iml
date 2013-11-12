@@ -7,12 +7,12 @@
     </content>
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
-    <orderEntry type="library" name="edtftpj" level="application" />
     <orderEntry type="library" name="trilead-ssh2" level="application" />
     <orderEntry type="library" name="xom" level="application" />
     <orderEntry type="library" name="tableLayout" level="project" />
     <orderEntry type="module" module-name="JBoom" />
     <orderEntry type="library" name="jboom" level="project" />
+    <orderEntry type="library" name="edtftpj" level="application" />
   </component>
 </module>
 

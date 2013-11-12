@@ -130,7 +130,7 @@ public class Objects
         else
             try
             {
-                wert = Class.forName(type).getConstructor((java.lang.Class[])null).newInstance(new Object[] { value });
+                wert = Class.forName(type).getConstructor((java.lang.Class[])null).newInstance(value);
             }
             catch (Exception ex)
             { }

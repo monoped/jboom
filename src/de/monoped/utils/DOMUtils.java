@@ -17,9 +17,13 @@ package de.monoped.utils;
  * monoped@users.sourceforge.net
  */
 
-import java.util.*;
-import javax.swing.*;
-import org.w3c.dom.*;
+import org.w3c.dom.Attr;
+import org.w3c.dom.CDATASection;
+import org.w3c.dom.Element;
+import org.w3c.dom.Node;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /** Some convenience methods for DOM.*/
 

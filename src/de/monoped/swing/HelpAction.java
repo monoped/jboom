@@ -1,14 +1,9 @@
 package de.monoped.swing;
 
-import de.monoped.swing.*;
-import de.monoped.utils.*;
-import java.awt.*;
 import java.awt.event.*;
-import java.io.*;
 import java.net.*;
 import java.util.*;
 import javax.swing.*;
-import javax.swing.event.*;
 
 /** Help Action class, launches the dialog from class HelpDialog */
 
@@ -120,7 +115,7 @@ public class HelpAction
     {
         try
         {
-            HelpDialog help = HelpDialog.createHelpDialog(null, "help");
+            HelpDialog help = HelpDialog.createHelpDialog();
 
             if (title != null)
                 help.setTitle(title);

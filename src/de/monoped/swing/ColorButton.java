@@ -1,45 +1,20 @@
 package de.monoped.swing;
 
-import java.awt.*;
-import java.awt.event.*;
-import java.awt.image.*;
-import java.util.*;
 import javax.swing.*;
-import javax.swing.event.*;
+import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.image.BufferedImage;
 
 public class ColorButton
     extends JButton
     implements ActionListener
 {
-    private boolean     defined;
     private Color       color;
-    private int         x, y, w, h;
+    private int w;
+    private int h;
     private String      title;
     private java.util.List<ColorChangeListener>  listeners;
-
-    //----------------------------------------------------------------------
-
-    public ColorButton(int w, int h, Color color, String title, boolean defined)
-    {
-        this.w = w;
-        this.h = h;
-        this.title = title;
-
-        if (defined)
-            setColor(color);
-        else 
-            setText(" ");
-
-        addActionListener(this);
-        listeners = new ArrayList<ColorChangeListener>();
-    }
-
-    //----------------------------------------------------------------------
-
-    public ColorButton(int w, int h, Color color, String title)
-    {
-        this(w, h, color, title, true);
-    }
 
     //----------------------------------------------------------------------
 
@@ -85,7 +60,6 @@ public class ColorButton
 
         if (col != null)
         {
-            defined = true;
             setColor(col);
             setText(null);
             repaint();
