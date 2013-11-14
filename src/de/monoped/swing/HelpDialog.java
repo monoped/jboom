@@ -154,7 +154,9 @@ public class HelpDialog
                     String  urlString = line.substring(index + 10, apo);
                     URL     url = loader.getResource(urlString);
 
-                    builder.append(url.toString()).append('"');
+                    if (url != null) {
+                        builder.append(url.toString()).append('"');
+                    }
                     from = index + 11;
                     indexAlt = apo + 1;
                 }

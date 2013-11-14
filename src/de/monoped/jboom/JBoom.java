@@ -991,20 +991,22 @@ public class JBoom
         String addressList = null;
         boolean allmail = true;
 
-        for (TreePath path : selPaths) {
-            JBoomNode node = (JBoomNode) path.getLastPathComponent();
+        if (selPaths != null) {
+            for (TreePath path : selPaths) {
+                JBoomNode node = (JBoomNode) path.getLastPathComponent();
 
-            if (!node.isMail()) {
-                if (allmail) {
-                    if (node.isLeaf())
-                        addressList = node.getURL();
+                if (!node.isMail()) {
+                    if (allmail) {
+                        if (node.isLeaf())
+                            addressList = node.getURL();
 
-                    allmail = false;
-                }
-            } else if (addressList == null)
-                addressList = node.getURL();
-            else
-                addressList += "," + node.getURL();
+                        allmail = false;
+                    }
+                } else if (addressList == null)
+                    addressList = node.getURL();
+                else
+                    addressList += "," + node.getURL();
+            }
         }
 
         return allmail ? "@" + addressList : addressList;
