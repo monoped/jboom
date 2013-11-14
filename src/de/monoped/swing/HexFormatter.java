@@ -1,29 +1,26 @@
 package de.monoped.swing;
 
-import java.text.*;
 import javax.swing.*;
+import java.text.ParseException;
 
 public class HexFormatter
-    extends JFormattedTextField.AbstractFormatter
-{
+        extends JFormattedTextField.AbstractFormatter {
     private int n, maxval;
 
     //----------------------------------------------------------------------
 
-    HexFormatter(int n)
-    {
+    HexFormatter(int n) {
         this.n = n;
         maxval = (1 << 4 * n) - 1;
     }
 
     //----------------------------------------------------------------------
 
-    public String valueToString(Object value)
-    {
-        int x = value == null ? 0 : ((Number)value).intValue();
+    public String valueToString(Object value) {
+        int x = value == null ? 0 : ((Number) value).intValue();
 
         x &= maxval;
-        
+
         String s = Integer.toHexString(x);
 
         int l = s.length();
@@ -37,24 +34,20 @@ public class HexFormatter
     //----------------------------------------------------------------------
 
     public Object stringToValue(String s)
-        throws ParseException
-    {
-        try
-        {
+            throws ParseException {
+        try {
             Integer k = Integer.valueOf(s, 16);
-            int     i = k.intValue();
+            int i = k.intValue();
 
             if (i < 0 || i > maxval)
                 throw new ParseException("Hex", 0);
 
             return k;
-        }
-        catch (NumberFormatException e)
-        {
+        } catch (NumberFormatException e) {
             throw new ParseException("Hex", 0);
         }
-        
+
     }
-    
+
 }
 

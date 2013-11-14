@@ -17,11 +17,14 @@ package de.monoped.jboom;
  * monoped@users.sourceforge.net
  */
 
-/** Common interface for URL handling in program and applet. */
+/**
+ * Common interface for URL handling in program and applet.
+ */
 
-interface URLHandler
-{
-    /** Show content of an URL. */
+interface URLHandler {
+    /**
+     * Show content of an URL.
+     */
 
     void handleURL(String url);
 }

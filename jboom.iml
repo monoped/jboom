@@ -1,18 +1,16 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <module type="JAVA_MODULE" version="4">
-  <component name="NewModuleRootManager" LANGUAGE_LEVEL="JDK_1_6" inherit-compiler-output="true">
-    <exclude-output />
+  <component name="NewModuleRootManager" inherit-compiler-output="true">
+    <output url="file://$MODULE_DIR$/out/production/jboom" />
+    <output-test url="file://$MODULE_DIR$/out/test/jboom" />
     <content url="file://$MODULE_DIR$">
       <sourceFolder url="file://$MODULE_DIR$/src" isTestSource="false" />
     </content>
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
-    <orderEntry type="library" name="trilead-ssh2" level="application" />
-    <orderEntry type="library" name="xom" level="application" />
-    <orderEntry type="library" name="tableLayout" level="project" />
-    <orderEntry type="module" module-name="JBoom" />
-    <orderEntry type="library" name="jboom" level="project" />
-    <orderEntry type="library" name="edtftpj" level="application" />
+    <orderEntry type="library" exported="" name="utils" level="project" />
+    <orderEntry type="library" exported="" name="trilead-ssh2" level="project" />
+    <orderEntry type="library" exported="" name="img" level="project" />
   </component>
 </module>
 

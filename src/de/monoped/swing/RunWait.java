@@ -19,37 +19,41 @@ package de.monoped.swing;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.*;
-import java.util.concurrent.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.util.concurrent.Callable;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.FutureTask;
 
-/** Start a thread and show a modal "wait" dialog with a cancel button. 
- *  Derived classes must implement T result().
- *  Pressing "cancel" removes the dialog.
+/**
+ * Start a thread and show a modal "wait" dialog with a cancel button.
+ * Derived classes must implement T result().
+ * Pressing "cancel" removes the dialog.
  */
 
 abstract public class RunWait<T>
-    implements Callable<T>
-{
-    protected WaitDialog        dialog;
-    private static int          DEF_WIDTH = 400, DEF_HEIGHT = 150;
-    private int                 dialogWidth, dialogHeight;
-    private Component           parent;
-    private String              title, cancelText, errorMsg;
-    private JComponent          component;
-    private FutureTask<T>       task;
+        implements Callable<T> {
+    protected WaitDialog dialog;
+    private static int DEF_WIDTH = 400, DEF_HEIGHT = 150;
+    private int dialogWidth, dialogHeight;
+    private Component parent;
+    private String title, cancelText, errorMsg;
+    private JComponent component;
+    private FutureTask<T> task;
 
     //----------------------------------------------------------------------
 
-    /** Constructor
+    /**
+     * Constructor
      *
-     *  @param parent       Parent component, use for centering the dialog.
-     *  @param component    Component to show in the dialog.
-     *  @param title        Dialog title
-     *  @param cancelText   Cancel button text.
+     * @param parent     Parent component, use for centering the dialog.
+     * @param component  Component to show in the dialog.
+     * @param title      Dialog title
+     * @param cancelText Cancel button text.
      */
-    
-    public RunWait(Component parent, JComponent component, String title, String cancelText)
-    {
+
+    public RunWait(Component parent, JComponent component, String title, String cancelText) {
         this.parent = parent;
         this.component = component;
         this.title = title;
@@ -60,16 +64,16 @@ abstract public class RunWait<T>
 
     //----------------------------------------------------------------------
 
-    /** Constructor
+    /**
+     * Constructor
      *
-     *  @param parent       Parent component, use for centering the dialog.
-     *  @param text         Label to show in the dialog.
-     *  @param title        Dialog title
-     *  @param cancelText   Cancel button text.
+     * @param parent     Parent component, use for centering the dialog.
+     * @param text       Label to show in the dialog.
+     * @param title      Dialog title
+     * @param cancelText Cancel button text.
      */
-    
-    public RunWait(Component parent, String text, String title, String cancelText)
-    {
+
+    public RunWait(Component parent, String text, String title, String cancelText) {
         this.parent = parent;
 
         setLabel(text);
@@ -81,86 +85,84 @@ abstract public class RunWait<T>
 
     //----------------------------------------------------------------------
 
-    /** Constructor
+    /**
+     * Constructor
      *
-     *  @param text         Label to show in the dialog.
-     *  @param title        Dialog title
-     *  @param cancelText   Cancel button text.
+     * @param text       Label to show in the dialog.
+     * @param title      Dialog title
+     * @param cancelText Cancel button text.
      */
-    
-    public RunWait(String text, String title, String cancelText)
-    {
+
+    public RunWait(String text, String title, String cancelText) {
         this(null, text, title, cancelText);
     }
 
     //----------------------------------------------------------------------
 
-    /** Constructor
+    /**
+     * Constructor
      *
-     *  @param text         Label to show in the dialog.
+     * @param text Label to show in the dialog.
      */
-    
-    public RunWait(String text)
-    {
+
+    public RunWait(String text) {
         this(null, text, "Please wait", "cancel");
     }
 
     //----------------------------------------------------------------------
 
-    public RunWait()
-    {
+    public RunWait() {
         this(null);
     }
 
     //----------------------------------------------------------------------
 
-    /** Cancel task and remove dialog. */
+    /**
+     * Cancel task and remove dialog.
+     */
 
-    public void cancelTask()
-    {
+    public void cancelTask() {
         task.cancel(true);
     }
 
     //----------------------------------------------------------------------
 
-    /** Cancel task and remove dialog. */
+    /**
+     * Cancel task and remove dialog.
+     */
 
-    public void cancelTask(String err)
-    {
+    public void cancelTask(String err) {
         errorMsg = err;
         task.cancel(true);
     }
 
     //----------------------------------------------------------------------
 
-    public String getErrorMsg()
-    {
+    public String getErrorMsg() {
         return errorMsg;
     }
 
     //----------------------------------------------------------------------
 
-    public boolean isCancelled()
-    {
+    public boolean isCancelled() {
         return task.isCancelled();
     }
 
     //----------------------------------------------------------------------
 
-    /** Remove the wait dialog. */
-    
-    public void removeDialog()
-    {
+    /**
+     * Remove the wait dialog.
+     */
+
+    public void removeDialog() {
         if (dialog == null)
             return;
 
         if (SwingUtilities.isEventDispatchThread())
             dialog.setVisible(false);
         else
-            SwingUtilities.invokeLater(new Runnable()
-            {
-                public void run()
-                {
+            SwingUtilities.invokeLater(new Runnable() {
+                public void run() {
                     dialog.setVisible(false);
                     dialog.dispose();
                 }
@@ -173,65 +175,58 @@ abstract public class RunWait<T>
 
     //----------------------------------------------------------------------
 
-    public void setCancelText(String cancelText)
-    {
+    public void setCancelText(String cancelText) {
         this.cancelText = cancelText;
     }
 
     //----------------------------------------------------------------------
 
-    public static void setDefaultSize(int w, int h)
-    {
+    public static void setDefaultSize(int w, int h) {
         DEF_WIDTH = w;
         DEF_HEIGHT = h;
     }
 
     //----------------------------------------------------------------------
 
-    public void setLabel(String text)
-    {
+    public void setLabel(String text) {
         component = new JPanel();
         component.add(new JLabel(text));
     }
 
     //----------------------------------------------------------------------
 
-    public void setParent(Component parent)
-    {
+    public void setParent(Component parent) {
         this.parent = parent;
     }
 
     //----------------------------------------------------------------------
 
-    public void setTitle(String title)
-    {
+    public void setTitle(String title) {
         this.title = title;
     }
 
     //----------------------------------------------------------------------
 
-    public void setDialogSize(int dialogWidth, int dialogHeight)
-    {
+    public void setDialogSize(int dialogWidth, int dialogHeight) {
         this.dialogWidth = dialogWidth;
         this.dialogHeight = dialogHeight;
     }
 
     //----------------------------------------------------------------------
 
-    public void setComponent(JComponent component)
-    {
+    public void setComponent(JComponent component) {
         this.component = component;
     }
 
     //----------------------------------------------------------------------
 
-    /** Start thread and show dialog. 
+    /**
+     * Start thread and show dialog.
      *
-     *  @return The result of the task, or null if an exceptin was thrown
+     * @return The result of the task, or null if an exceptin was thrown
      */
 
-    public T start()
-    {
+    public T start() {
         dialog = new WaitDialog(parent, component, title, cancelText);
         dialog.setSize(dialogWidth, dialogHeight);
 
@@ -241,12 +236,9 @@ abstract public class RunWait<T>
         executor.execute(task);
         dialog.setVisible(true);
 
-        try
-        {
+        try {
             return task.get();
-        }
-        catch (Exception e)
-        {
+        } catch (Exception e) {
             return null;
         }
     }
@@ -255,24 +247,18 @@ abstract public class RunWait<T>
     // Callable method
     //----------------------------------------------------------------------
 
-    public T call()
-    {
-        T   res;
+    public T call() {
+        T res;
 
-        try
-        {
+        try {
             res = result();     // call user supplied function
-        }
-        catch (Exception ex)
-        {
+        } catch (Exception ex) {
             JOptionPane.showMessageDialog(null, ex.toString(), "Error", JOptionPane.ERROR_MESSAGE);
             res = null;
         }
 
-        SwingUtilities.invokeLater(new Runnable()
-        {
-            public void run()
-            {
+        SwingUtilities.invokeLater(new Runnable() {
+            public void run() {
                 removeDialog();
             }
         });
@@ -282,24 +268,24 @@ abstract public class RunWait<T>
 
     //======================================================================
 
-    /** Modal wait dialog with a cancel button. */
+    /**
+     * Modal wait dialog with a cancel button.
+     */
 
     class WaitDialog
-        extends JDialog
-        implements ActionListener
-    {
+            extends JDialog
+            implements ActionListener {
         private JButton cancelButton;
 
         //----------------------------------------------------------------------
 
-        WaitDialog(Component parent, JComponent component, String title, String cancelText)
-        {
+        WaitDialog(Component parent, JComponent component, String title, String cancelText) {
             setModal(true);
             setBounds(Utilities.centerComponent(parent, dialogWidth, dialogHeight));
             setTitle(title);
             setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
 
-            JPanel   center = new JPanel();
+            JPanel center = new JPanel();
 
             center.add(component);
             add(center);
@@ -314,14 +300,14 @@ abstract public class RunWait<T>
 
         //----------------------------------------------------------------------
 
-        /** ActionListener method handling cancel button. */
+        /**
+         * ActionListener method handling cancel button.
+         */
 
-        public void actionPerformed(ActionEvent e)
-        {
+        public void actionPerformed(ActionEvent e) {
             Object src = e.getSource();
 
-            if (src == cancelButton)
-            {
+            if (src == cancelButton) {
                 cancelTask();
                 removeDialog();
             }

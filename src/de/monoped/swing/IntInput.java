@@ -1,47 +1,36 @@
 package de.monoped.swing;
 
-import java.awt.event.*;
-import java.text.*;
 import javax.swing.*;
-import javax.swing.event.*;
-import javax.swing.text.*;
+import java.text.ParseException;
 
 public class IntInput
-    extends JFormattedTextField
-{
+        extends JFormattedTextField {
     private int minval, maxval;
 
     //----------------------------------------------------------------------
 
     class IntVerifier
-        extends InputVerifier 
-    {
-        public boolean verify(JComponent input) 
-        {
-            try 
-            {
-                int x = ((Number)getFormatter().stringToValue(getText())).intValue();
+            extends InputVerifier {
+        public boolean verify(JComponent input) {
+            try {
+                int x = ((Number) getFormatter().stringToValue(getText())).intValue();
 
                 return x >= minval && x <= maxval;
-            } 
-            catch (ParseException e) 
-            {
+            } catch (ParseException e) {
                 return false;
             }
         }
 
         //----------------------------------------------------------------------
 
-        public boolean shouldYieldFocus(JComponent input) 
-        {
+        public boolean shouldYieldFocus(JComponent input) {
             return verify(input);
         }
-    }        
-    
+    }
+
     //----------------------------------------------------------------------
 
-    public IntInput(int n, int minval, int maxval)
-    {
+    public IntInput(int n, int minval, int maxval) {
         super(new Integer(0));
         this.minval = minval;
         this.maxval = maxval;
@@ -51,24 +40,21 @@ public class IntInput
 
     //----------------------------------------------------------------------
 
-    public IntInput(int n)
-    {
+    public IntInput(int n) {
         this(n, Integer.MIN_VALUE, Integer.MAX_VALUE);
     }
-    
+
     //----------------------------------------------------------------------
-    
+
     public void commitEdit()
-        throws ParseException
-    {
+            throws ParseException {
         super.commitEdit();
         setValue(super.getValue());
     }
 
     //----------------------------------------------------------------------
 
-    public boolean isValid()
-    {
+    public boolean isValid() {
         return isEditValid() && getInputVerifier().verify(this);
     }
 }

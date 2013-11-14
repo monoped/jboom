@@ -18,25 +18,25 @@ package de.monoped.jboom;
  */
 
 import javax.swing.*;
-import javax.swing.tree.*;
+import javax.swing.tree.TreePath;
 
-/** Class representing a location in a tree. */
+/**
+ * Class representing a location in a tree.
+ */
 
-class TreeLocation
-{
-    private int         index;
-    private JBoomNode   parent;
+class TreeLocation {
+    private int index;
+    private JBoomNode parent;
 
     //----------------------------------------------------------------------
-    
-    TreeLocation(JTree tree)
-    {
+
+    TreeLocation(JTree tree) {
         TreePath path = tree.getSelectionPath();
 
         if (path == null)
             return;
-        
-        JBoomNode selected = (JBoomNode)path.getLastPathComponent();
+
+        JBoomNode selected = (JBoomNode) path.getLastPathComponent();
 
         parent = selected;
 
@@ -44,32 +44,34 @@ class TreeLocation
             return;
 
         if (selected.isLeaf())
-            parent = (JBoomNode)selected.getParent();
+            parent = (JBoomNode) selected.getParent();
         else
             selected = null;
 
         if (parent == null)
-            parent = (JBoomNode)tree.getModel().getRoot();
+            parent = (JBoomNode) tree.getModel().getRoot();
 
         if (selected != null)
             index = parent.getIndex(selected) + 1;
     }
 
     //----------------------------------------------------------------------
-    
-    /** Get index of selected node. */
 
-    int getIndex()
-    {
+    /**
+     * Get index of selected node.
+     */
+
+    int getIndex() {
         return index;
     }
 
     //----------------------------------------------------------------------
-   
-    /** Get parent of selected node. */
 
-    JBoomNode getParent()
-    {
+    /**
+     * Get parent of selected node.
+     */
+
+    JBoomNode getParent() {
         return parent;
     }
 

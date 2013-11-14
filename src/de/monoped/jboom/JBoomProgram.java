@@ -35,7 +35,7 @@ public class JBoomProgram
     extends JFrame
     implements ActionListener, URLHandler
 {
-    static KeyBundle    bundle = (KeyBundle)ResourceBundle.getBundle("de.monoped.jboom.Resources");
+    static KeyBundle    bundle;
     private static final boolean    WITH_TRAY = true;
 
     private JBoom       jboom;
@@ -233,6 +233,8 @@ public class JBoomProgram
         boolean     debug = false,
                     iconified = false;
         File        privateKey = null;
+
+        bundle = (KeyBundle)ResourceBundle.getBundle("de.monoped.jboom.Resources");
 
         // Handle options
         

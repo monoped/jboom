@@ -17,47 +17,49 @@ package de.monoped.jboom;
  * monoped@users.sourceforge.net
  */
 
-import de.monoped.utils.*;
-import java.io.*;
-import java.util.*;
-import java.util.regex.*;
-import java.text.*;
+import de.monoped.utils.KeyBundle;
 
-/** Read Firefox html bookmark file and transform into
- *  array of JBoomNodes
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.Reader;
+import java.text.ParseException;
+import java.util.ArrayList;
+import java.util.ResourceBundle;
+import java.util.regex.Pattern;
+
+/**
+ * Read Firefox html bookmark file and transform into
+ * array of JBoomNodes
  */
 
-class HTMLImporter
-{
-    private static int  I_URL = 0;
-    private static int I_NAME = 1;
-    static KeyBundle    bundle = (KeyBundle)ResourceBundle.getBundle("de.monoped.jboom.Resources");
+class HTMLImporter {
+    private static int I_URL = 0, I_NAME = 1, I_TEXT = 2;
+    static KeyBundle bundle = (KeyBundle) ResourceBundle.getBundle("de.monoped.jboom.Resources");
 
-    private String      text;
-    private int         index;
+    private Reader in;
+    private String text;
+    private int index;
 
     //----------------------------------------------------------------------
 
-    HTMLImporter(Reader in)
-    {
-        Pattern pattern = Pattern.compile("\\p{Cntrl}"); 
+    HTMLImporter(Reader in) {
+        this.in = in;
+
+        Pattern pattern = Pattern.compile("\\p{Cntrl}");
 
         // Read HTML completely into string
 
-        StringBuilder   builder = new StringBuilder();
-        BufferedReader  reader = new BufferedReader(in);
-        String          line;
+        StringBuilder builder = new StringBuilder();
+        BufferedReader reader = new BufferedReader(in);
+        String line;
 
-        try
-        {
+        try {
             while ((line = reader.readLine()) != null)
                 builder.append(line).append('\n');
 
             reader.close();
             text = pattern.matcher(builder.toString()).replaceAll("");
-        }
-        catch (IOException e)
-        {
+        } catch (IOException e) {
             e.printStackTrace();
         }
 
@@ -67,8 +69,7 @@ class HTMLImporter
     //----------------------------------------------------------------------
 
     private int find(String s, int k)
-        throws ParseException
-    {
+            throws ParseException {
         int i = text.indexOf(s, k);
 
         if (i < 0)
@@ -80,8 +81,7 @@ class HTMLImporter
     //----------------------------------------------------------------------
 
     private int findc(String s, int k)
-        throws ParseException
-    {
+            throws ParseException {
         int l = s.length();
 
         for (int i = k; i < text.length() - l; ++i)
@@ -93,13 +93,15 @@ class HTMLImporter
 
     //----------------------------------------------------------------------
 
-    /** Find and return one of the supplied tags or null if none found */
+    /**
+     * Find and return one of the supplied tags or null if none found
+     */
 
-    private String findTag(String... tags) {
+    private String findTag(String... tags)
+            throws ParseException {
         for (; index < text.length() && (index = text.indexOf("<", index)) >= 0; ++index)
-            for (String tag: tags)
-                if (text.regionMatches(true, index, tag, 0, tag.length()))
-                {
+            for (String tag : tags)
+                if (text.regionMatches(true, index, tag, 0, tag.length())) {
                     index += tag.length();
                     return tag;
                 }
@@ -109,16 +111,16 @@ class HTMLImporter
 
     //----------------------------------------------------------------------
 
-    /** Return text (up to next tag) */
+    /**
+     * Return text (up to next tag)
+     */
 
     private String getText()
-        throws ParseException
-    {
-        StringBuilder   s = new StringBuilder("<html>");
-        int             iStart = index;
+            throws ParseException {
+        StringBuilder s = new StringBuilder("<html>");
+        int iStart = index;
 
-        while (true)
-        {
+        while (true) {
             if (index >= text.length())
                 throw new ParseException(bundle.getText("textIncomp", String.valueOf(lineno(iStart))), iStart);
 
@@ -126,8 +128,7 @@ class HTMLImporter
 
             if (c == '<')
                 break;
-            else
-            {
+            else {
                 s.append(c);
                 ++index;
             }
@@ -141,10 +142,9 @@ class HTMLImporter
     // read <A
 
     private void getUrlName(String[] urlName)
-        throws ParseException
-    {
+            throws ParseException {
         int i, j, k, l;
-        
+
         i = findc("HREF=\"", index);
         j = find("\"", i + 6);
         k = find(">", j + 1);
@@ -153,7 +153,7 @@ class HTMLImporter
         urlName[I_URL] = text.substring(i + 6, j);
         urlName[I_NAME] = "<html>" + text.substring(k + 1, l);
 
-        if (urlName[I_NAME].endsWith(".url") || urlName[I_NAME].endsWith(".URL") )
+        if (urlName[I_NAME].endsWith(".url") || urlName[I_NAME].endsWith(".URL"))
             urlName[I_NAME] = urlName[I_NAME].substring(0, urlName[I_NAME].length() - 4);
 
         index = l + 4;
@@ -162,8 +162,7 @@ class HTMLImporter
     //----------------------------------------------------------------------
 
     ArrayList<JBoomNode> importHTML()
-        throws ParseException
-    {
+            throws ParseException {
         if (text == null || findTag("<DL>") == null)
             return null;
 
@@ -172,10 +171,9 @@ class HTMLImporter
 
     //----------------------------------------------------------------------
 
-    private int lineno(int ichar)
-    {
+    private int lineno(int ichar) {
         int j = 0,
-            l = 1;
+                l = 1;
 
         while ((j = text.indexOf("\n", j)) >= 0)
             if (j++ > ichar)
@@ -189,8 +187,7 @@ class HTMLImporter
     //----------------------------------------------------------------------
 
     private String nextTag()
-        throws ParseException
-    {
+            throws ParseException {
         int iStart = index;
 
         index = text.indexOf("<", index);
@@ -198,9 +195,9 @@ class HTMLImporter
         if (index < 0)
             return null;
 
-        StringBuilder   s = new StringBuilder();
-        char            c;
-        int             i;
+        StringBuilder s = new StringBuilder();
+        char c;
+        int i;
 
         for (i = index + 1; i < text.length() && (c = text.charAt(i)) != ' ' && c != '/' && c != '>'; ++i)
             s.append(c);
@@ -214,13 +211,12 @@ class HTMLImporter
     //----------------------------------------------------------------------
 
     private ArrayList<JBoomNode> readList()
-        throws ParseException
-    {
-        ArrayList<JBoomNode>    list = new ArrayList<JBoomNode>();
-        JBoomNode               node;
+            throws ParseException {
+        ArrayList<JBoomNode> list = new ArrayList<JBoomNode>();
+        JBoomNode node;
 
         while ((node = readNode()) != null)
-            if (! node.getURL().startsWith("place:") && ! list.contains(node))
+            if (!node.getURL().startsWith("place:") && !list.contains(node))
                 list.add(node);
 
         return list;
@@ -229,8 +225,7 @@ class HTMLImporter
     //----------------------------------------------------------------------
 
     private JBoomNode readNode()
-        throws ParseException
-    {
+            throws ParseException {
         String tag = findTag("<DT>", "</DL>");
 
         if (tag == null || tag.equals("</DL>"))
@@ -247,8 +242,7 @@ class HTMLImporter
 
         if (tag.equals("A"))
             getUrlName(urlName);        // leaf
-        else if (tag.equals("H3"))
-        {                               // folder
+        else if (tag.equals("H3")) {                               // folder
             index = find(">", index);
             ++index;
 
@@ -261,34 +255,27 @@ class HTMLImporter
 
         String dd = nextTag();
 
-        int i_TEXT = 2;
-        if (dd.equals("DD"))
-        {
+        if (dd.equals("DD")) {
             index = find(">", index) + 1;
-            urlName[i_TEXT] = getText();
-        }
-        else
-            urlName[i_TEXT] = null;
+            urlName[I_TEXT] = getText();
+        } else
+            urlName[I_TEXT] = null;
 
-        if (urlName[I_URL] == null)
-        {
+        if (urlName[I_URL] == null) {
             // folder
 
-            JBoomNode               node = new JBoomNode(urlName[I_NAME], urlName[i_TEXT]);
-            ArrayList<JBoomNode>    list = readList();
+            JBoomNode node = new JBoomNode(urlName[I_NAME], urlName[I_TEXT]);
+            ArrayList<JBoomNode> list = readList();
 
-            if (list != null)
-            {
-                for (JBoomNode n: list)
+            if (list != null) {
+                for (JBoomNode n : list)
                     node.add(n);
 
                 return node;
-            }
-            else
+            } else
                 return null;
-        }
-        else
-            return new JBoomNode(urlName[I_NAME], urlName[I_URL], urlName[i_TEXT], false);
+        } else
+            return new JBoomNode(urlName[I_NAME], urlName[I_URL], urlName[I_TEXT], false);
     }
 
 }

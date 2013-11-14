@@ -17,108 +17,105 @@ package de.monoped.jboom;
  * monoped@users.sourceforge.net
  */
 
-import de.monoped.utils.*;
-import java.awt.*;
-import java.awt.event.*;
+import de.monoped.utils.DOMOut;
+import de.monoped.utils.Strings;
 
-/** Abstract connection base class. */
+/**
+ * Abstract connection base class.
+ */
 
 public abstract class Transport
-    implements Cloneable
-{
-    static final String     CANCELLED = "cancelled";
+        implements Cloneable {
+    static final String CANCELLED = "cancelled";
 
-    private String          message, name;
-    private boolean         active, writeable;
+    private String message, name;
+    private boolean active, writeable;
 
     //----------------------------------------------------------------------
 
-    protected Transport(String name, boolean active)
-    {  
+    protected Transport(String name, boolean active) {
         this.name = name;
         this.active = active;
     }
 
     //----------------------------------------------------------------------
 
-    public void dump()
-    { }
+    public void dump() {
+    }
 
     //----------------------------------------------------------------------
 
-    public String getMessage()
-    {
+    public String getMessage() {
         return message;
     }
 
     //----------------------------------------------------------------------
 
-    public String getName()
-    {
+    public String getName() {
         return name;
     }
-    
+
     //----------------------------------------------------------------------
 
-    boolean isActive()
-    {
+    boolean isActive() {
         return active;
     }
 
     //----------------------------------------------------------------------
 
-    void setActive(boolean active)
-    {
+    void setActive(boolean active) {
         this.active = active;
     }
-    
+
     //----------------------------------------------------------------------
 
-    protected void setMessage(String message)
-    {
+    protected void setMessage(String message) {
         this.message = message;
     }
 
     //----------------------------------------------------------------------
 
-    void setName(String name)
-    {
+    void setName(String name) {
         this.name = name;
     }
-    
+
     //----------------------------------------------------------------------
 
-    static void optAppendXML(StringBuilder buf, String key, String value)
-    {
+    static void optAppendXML(StringBuilder buf, String key, String value) {
         if (value != null)
             buf.append("    <").append(key).append(">")
-                .append(Strings.replaceString(value, "&", "&amp;"))
-                .append("</").append(key).append(">\n");
+                    .append(Strings.replaceString(value, "&", "&amp;"))
+                    .append("</").append(key).append(">\n");
     }
-    
+
     //----------------------------------------------------------------------
-    
-    String getPasswd()
-    {
+
+    String getPasswd() {
         return null;
     }
 
     //----------------------------------------------------------------------
 
-    public String toString()
-    { 
+    public String toString() {
         return name + " " + getSpec() + " active=" + active + " writeable=" + writeable;
     }
-    
+
     //----------------------------------------------------------------------
 
-    abstract public String  getSpec();
-    abstract TransportUI    getUI();
-    abstract boolean        isWriteable();
-    abstract boolean        needsDownloadPasswd();
-    abstract boolean        needsUploadPasswd();
-    abstract String         readFile(String passwd);
-    abstract boolean        writeFile(String xml, String passwd);
-    abstract void           appendXML(DOMOut out);
+    abstract public String getSpec();
+
+    abstract TransportUI getUI();
+
+    abstract boolean isWriteable();
+
+    abstract boolean needsDownloadPasswd();
+
+    abstract boolean needsUploadPasswd();
+
+    abstract String readFile(String passwd);
+
+    abstract boolean writeFile(String xml, String passwd);
+
+    abstract void appendXML(DOMOut out);
 }
 

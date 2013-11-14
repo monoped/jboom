@@ -17,23 +17,27 @@ package de.monoped.jboom;
  * monoped@users.sourceforge.net
  */
 
-import de.monoped.utils.*;
-import java.util.*;
+import de.monoped.utils.DOMUtils;
+import de.monoped.utils.KeyBundle;
+import org.w3c.dom.Element;
+
 import javax.swing.*;
-import org.w3c.dom.*;
+import java.util.ResourceBundle;
 
-/** Factory class for connections. */
+/**
+ * Factory class for connections.
+ */
 
-class TransportFactory
-{
-    private static int      number;
+class TransportFactory {
+    private static int number;
 
     //----------------------------------------------------------------------
 
-    /** Create connection from an DOM element. */
+    /**
+     * Create connection from an DOM element.
+     */
 
-    static Transport createTransport(Element el)
-    {
+    static Transport createTransport(Element el) {
         String mode = DOMUtils.getAttributeValue(el, "mode");
 
         if (mode.equals("ftp"))
@@ -50,12 +54,13 @@ class TransportFactory
 
     //----------------------------------------------------------------------
 
-    /** Create connection from a URL string. */
+    /**
+     * Create connection from a URL string.
+     */
 
-    static Transport createTransport(String mode)
-    {
-        String name = ((KeyBundle)ResourceBundle.getBundle("de.monoped.jboom.Resources")).getText("newConn")
-            + " " + ++number;
+    static Transport createTransport(String mode) {
+        String name = ((KeyBundle) ResourceBundle.getBundle("de.monoped.jboom.Resources")).getText("newConn")
+                + " " + ++number;
 
         if (mode.equals("ftp"))
             return new FtpTransport(name);
@@ -71,20 +76,21 @@ class TransportFactory
 
     //----------------------------------------------------------------------
 
-    /** Return array of available connection menu items. */
+    /**
+     * Return array of available connection menu items.
+     */
 
-    static JMenuItem[]  createNewItems()
-    {
+    static JMenuItem[] createNewItems() {
         JMenuItem ftpItem = new JMenuItem("ftp"),
-                  scpItem = new JMenuItem("ssh"),
-                  httpItem = new JMenuItem("http");
+                scpItem = new JMenuItem("ssh"),
+                httpItem = new JMenuItem("http");
 
         ftpItem.setActionCommand("ftp");
         scpItem.setActionCommand("ssh");
         httpItem.setActionCommand("http");
 
-        return new JMenuItem[] { ftpItem, scpItem, httpItem };
+        return new JMenuItem[]{ftpItem, scpItem, httpItem};
     }
-    
+
 }
 

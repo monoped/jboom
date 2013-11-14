@@ -18,24 +18,24 @@ package de.monoped.jboom;
  * monoped@users.sourceforge.net
  */
 
-import de.monoped.utils.*;
-import java.io.*;
-import java.util.*;
+import java.io.BufferedWriter;
+import java.io.IOException;
+import java.io.Writer;
 
-/** Write bookmark tree as a Firefox HTML file */
+/**
+ * Write bookmark tree as a Firefox HTML file
+ */
 
-class HTMLExporter
-{
-    private BufferedWriter  out;
-    private JBoomNode       root;
-    private int             depth;
-    private String          indent;
-    private boolean         mail, marks;
+class HTMLExporter {
+    private BufferedWriter out;
+    private JBoomNode root;
+    private int depth;
+    private String indent;
+    private boolean mail, marks;
 
     //----------------------------------------------------------------------
 
-    HTMLExporter(Writer out, JBoomNode root, boolean marks, boolean mail)
-    {
+    HTMLExporter(Writer out, JBoomNode root, boolean marks, boolean mail) {
         this.out = new BufferedWriter(out);
         this.root = root;
         this.marks = marks;
@@ -46,18 +46,19 @@ class HTMLExporter
 
     //----------------------------------------------------------------------
 
-    /** export complete tree */
+    /**
+     * export complete tree
+     */
 
     void export()
-        throws IOException
-    {
-        out.write("<!DOCTYPE NETSCAPE-Bookmark-file-1>\n" + 
-            "<!-- This is an automatically generated file.\n" +
-            "     It will be read and overwritten.\n" +
-            "     DO NOT EDIT! -->\n" +
-            "<META HTTP-EQUIV=\"Content-Type\" CONTENT=\"text/html; charset=UTF-8\">\n" +
-            "<TITLE>" + root.getPureName() + "</TITLE>\n" +
-            "<H1>jBoom</H1>\n\n");
+            throws IOException {
+        out.write("<!DOCTYPE NETSCAPE-Bookmark-file-1>\n" +
+                "<!-- This is an automatically generated file.\n" +
+                "     It will be read and overwritten.\n" +
+                "     DO NOT EDIT! -->\n" +
+                "<META HTTP-EQUIV=\"Content-Type\" CONTENT=\"text/html; charset=UTF-8\">\n" +
+                "<TITLE>" + root.getPureName() + "</TITLE>\n" +
+                "<H1>jBoom</H1>\n\n");
 
         writeList(root);
         out.close();
@@ -65,15 +66,15 @@ class HTMLExporter
 
     //----------------------------------------------------------------------
 
-    /** Export a node */
+    /**
+     * Export a node
+     */
 
     private void writeNode(JBoomNode node)
-        throws IOException
-    {
+            throws IOException {
         boolean ismail = node.isMail();
 
-        if (mail && ismail || marks && ! ismail)
-        {
+        if (mail && ismail || marks && !ismail) {
             writeIndent();
             out.write("<DT>");
 
@@ -89,40 +90,41 @@ class HTMLExporter
 
             String text = node.getPureText();
 
-            if (text != null && text.length() > 0)
-            {
+            if (text != null && text.length() > 0) {
                 writeIndent();
                 out.write("<DD>" + text + "</DD>\n");
             }
 
-            if (! node.isLeaf())
+            if (!node.isLeaf())
                 writeList(node);
         }
     }
 
     //----------------------------------------------------------------------
 
-    /** Write indentation (n * 4) */
+    /**
+     * Write indentation (n * 4)
+     */
 
     private void writeIndent()
-        throws IOException
-    {
+            throws IOException {
         for (int i = 0; i < depth; ++i)
             out.write(indent);
     }
 
     //----------------------------------------------------------------------
 
-    /** Export a directory */
+    /**
+     * Export a directory
+     */
 
     private void writeList(JBoomNode node)
-        throws IOException
-    {
+            throws IOException {
         writeIndent();
         out.write("<DL><p>\n");
         ++depth;
 
-        for (JBoomNode child: node.getChildren())
+        for (JBoomNode child : node.getChildren())
             writeNode(child);
 
         --depth;

@@ -17,35 +17,36 @@ package de.monoped.swing;
  * monoped@users.sourceforge.net
  */
 
-import de.monoped.utils.*;
-import java.awt.*;
-import java.awt.event.*;
-import java.beans.*;
-import javax.swing.*;
-import javax.swing.border.*;
+import de.monoped.utils.KeyBundle;
 
-/** Convenience class for creating buttons etc. Contains a set of 
- *  default attributes.
+import javax.swing.*;
+import javax.swing.border.Border;
+import javax.swing.border.EmptyBorder;
+import java.awt.*;
+
+/**
+ * Convenience class for creating buttons etc. Contains a set of
+ * default attributes.
  */
 
-public class UIFactory
-{
-    private boolean                 borderPainted = true, 
-                                    contentAreaFilled = true;
-    private Border                  border;
-    private Insets                  margin;
+public class UIFactory {
+    private boolean borderPainted = true,
+            contentAreaFilled = true;
+    private Border border;
+    private Insets margin;
 
     //----------------------------------------------------------------------
 
-    public UIFactory()
-    { }
+    public UIFactory() {
+    }
 
     //----------------------------------------------------------------------
 
-    /** Create a button and connect it with an Action. */
+    /**
+     * Create a button and connect it with an Action.
+     */
 
-    public JButton button(Action action)
-    {
+    public JButton button(Action action) {
         JButton b = new JButton(action);
 
         if (border != null)
@@ -62,10 +63,11 @@ public class UIFactory
 
     //----------------------------------------------------------------------
 
-    /** Create a check box and connect it with an Action. */
+    /**
+     * Create a check box and connect it with an Action.
+     */
 
-    public JCheckBox checkBox(Action action, boolean selected)
-    {
+    public JCheckBox checkBox(Action action, boolean selected) {
         JCheckBox b = new JCheckBox(action);
 
         b.setSelected(selected);
@@ -74,8 +76,7 @@ public class UIFactory
 
     //----------------------------------------------------------------------
 
-    public JButton iconButton(Action action)
-    {
+    public JButton iconButton(Action action) {
         JButton b = new JButton(action);
 
         b.setBorderPainted(false);
@@ -87,8 +88,7 @@ public class UIFactory
 
     //----------------------------------------------------------------------
 
-    public JLabel labelFor(KeyBundle bundle, String text, Component comp)
-    {
+    public JLabel labelFor(KeyBundle bundle, String text, Component comp) {
         JLabel label = new JLabel(bundle.getText(text));
 
         label.setDisplayedMnemonic(bundle.getMnemonic(text));
@@ -98,10 +98,9 @@ public class UIFactory
 
     //----------------------------------------------------------------------
 
-    public JRadioButton radioButton(KeyBundle bundle, String text, ButtonGroup group, boolean selected)
-    {
+    public JRadioButton radioButton(KeyBundle bundle, String text, ButtonGroup group, boolean selected) {
         JRadioButton button = new JRadioButton(bundle.getText(text));
-        
+
         button.setMnemonic(bundle.getMnemonic(text));
         button.setSelected(selected);
 
@@ -113,10 +112,9 @@ public class UIFactory
 
     //----------------------------------------------------------------------
 
-    public JRadioButton radioButton(KeyBundle bundle, String[] text, ButtonGroup group, boolean selected)
-    {
+    public JRadioButton radioButton(KeyBundle bundle, String[] text, ButtonGroup group, boolean selected) {
         JRadioButton button = new JRadioButton(bundle.getText(text));
-        
+
         button.setMnemonic(bundle.getMnemonic(text[0]));
         button.setSelected(selected);
 
@@ -128,43 +126,37 @@ public class UIFactory
 
     //----------------------------------------------------------------------
 
-    public JRadioButton radioButton(KeyBundle bundle, String text, ButtonGroup group)
-    {
+    public JRadioButton radioButton(KeyBundle bundle, String text, ButtonGroup group) {
         return radioButton(bundle, text, group, false);
     }
 
     //----------------------------------------------------------------------
 
-    public void setBorderPainted(boolean borderPainted)
-    {
+    public void setBorderPainted(boolean borderPainted) {
         this.borderPainted = borderPainted;
     }
 
     //----------------------------------------------------------------------
 
-    public void setContentAreaFilled(boolean contentAreaFilled)
-    {
+    public void setContentAreaFilled(boolean contentAreaFilled) {
         this.contentAreaFilled = contentAreaFilled;
     }
 
     //----------------------------------------------------------------------
 
-    public void setBorder(Border border)
-    {
+    public void setBorder(Border border) {
         this.border = border;
     }
 
     //----------------------------------------------------------------------
 
-    public void setEmptyBorder(int top, int left, int bottom, int right)
-    {
-        border = new EmptyBorder(top, left, bottom,right);
+    public void setEmptyBorder(int top, int left, int bottom, int right) {
+        border = new EmptyBorder(top, left, bottom, right);
     }
 
     //----------------------------------------------------------------------
 
-    public void setMargin(int top, int left, int bottom, int right)
-    {
+    public void setMargin(int top, int left, int bottom, int right) {
         this.margin = new Insets(top, left, bottom, right);
     }
 

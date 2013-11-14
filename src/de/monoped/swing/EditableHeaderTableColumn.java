@@ -1,54 +1,48 @@
 package de.monoped.swing;
 
 import javax.swing.*;
-import javax.swing.table.*;
+import javax.swing.table.TableCellEditor;
+import javax.swing.table.TableColumn;
 
 public class EditableHeaderTableColumn
-    extends TableColumn 
-{
-    protected TableCellEditor   headerEditor;
-    protected boolean           isHeaderEditable;
+        extends TableColumn {
+    protected TableCellEditor headerEditor;
+    protected boolean isHeaderEditable;
 
     //----------------------------------------------------------------------
 
-    public EditableHeaderTableColumn() 
-    {
+    public EditableHeaderTableColumn() {
         setHeaderEditor(createDefaultHeaderEditor());
         isHeaderEditable = true;
     }
 
     //----------------------------------------------------------------------
 
-    public void setHeaderEditor(TableCellEditor headerEditor) 
-    {
+    public void setHeaderEditor(TableCellEditor headerEditor) {
         this.headerEditor = headerEditor;
     }
 
     //----------------------------------------------------------------------
 
-    public TableCellEditor getHeaderEditor() 
-    {
+    public TableCellEditor getHeaderEditor() {
         return headerEditor;
     }
 
     //----------------------------------------------------------------------
 
-    public void setHeaderEditable(boolean isEditable) 
-    {
+    public void setHeaderEditable(boolean isEditable) {
         isHeaderEditable = isEditable;
     }
 
     //----------------------------------------------------------------------
 
-    public boolean isHeaderEditable() 
-    {
+    public boolean isHeaderEditable() {
         return isHeaderEditable;
     }
 
     //----------------------------------------------------------------------
 
-    public void copyValues(TableColumn base) 
-    {
+    public void copyValues(TableColumn base) {
         modelIndex = base.getModelIndex();
         identifier = base.getIdentifier();
         width = base.getWidth();
@@ -64,9 +58,8 @@ public class EditableHeaderTableColumn
 
     //----------------------------------------------------------------------
 
-    protected TableCellEditor createDefaultHeaderEditor() 
-    {
+    protected TableCellEditor createDefaultHeaderEditor() {
         return new DefaultCellEditor(new JTextField());
-    }   
+    }
 }
 

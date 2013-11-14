@@ -17,49 +17,53 @@ package de.monoped.swing;
  * monoped@users.sourceforge.net
  */
 
-import java.awt.*;
-import java.awt.event.*;
 import javax.swing.*;
+import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
 
-/** Modal dialog prompting user for a password. */
+/**
+ * Modal dialog prompting user for a password.
+ */
 
 public class PasswordDialog
-    extends JDialog
-    implements ActionListener, KeyListener
-{
-    static final int        DIALOG_WIDTH = 600, DIALOG_HEIGHT = 150;
+        extends JDialog
+        implements ActionListener, KeyListener {
+    static final int DIALOG_WIDTH = 600, DIALOG_HEIGHT = 150;
 
-    private JButton         okButton, cancelButton;
-    private JPasswordField  pwField;
-    private String          password;
+    private JButton okButton, cancelButton;
+    private JPasswordField pwField;
+    private String password;
 
     //----------------------------------------------------------------------
 
-    /** Constructor.
+    /**
+     * Constructor.
      *
-     *  @param  parent      Dialog is centered in this component. If null,
-     *                      dialog is centered in the screen.
-     *  @param  title       Dialog title.
-     *  @param  text        Text left of input field.
-     *  @param  passwd      Initial password, may be null.
+     * @param parent Dialog is centered in this component. If null,
+     *               dialog is centered in the screen.
+     * @param title  Dialog title.
+     * @param text   Text left of input field.
+     * @param passwd Initial password, may be null.
      */
 
-    public PasswordDialog(Component parent, String title, String text, String passwd)
-    {
+    public PasswordDialog(Component parent, String title, String text, String passwd) {
         setBounds(Utilities.centerComponent(parent, DIALOG_WIDTH, DIALOG_HEIGHT));
         setTitle(title);
         setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
         setModal(true);
 
-        JPanel          content = new JPanel(),
-                        center = new JPanel(),
-                        bottom = new JPanel();
-        
+        JPanel content = new JPanel(),
+                center = new JPanel(),
+                bottom = new JPanel();
+
         pwField = new JPasswordField(8);
 
         if (passwd != null)
             pwField.setText(passwd);
-        
+
         content.setLayout(new BorderLayout());
 
         center.add(new JLabel(text));
@@ -72,7 +76,7 @@ public class PasswordDialog
         okButton.addActionListener(this);
         cancelButton = new JButton("Cancel");
         cancelButton.addActionListener(this);
-        
+
         bottom.add(okButton);
         bottom.add(cancelButton);
 
@@ -82,10 +86,11 @@ public class PasswordDialog
 
     //----------------------------------------------------------------------
 
-    /** Show dialog and return the password. */
+    /**
+     * Show dialog and return the password.
+     */
 
-    public String getPassword()
-    {
+    public String getPassword() {
         setVisible(true);
         return password;
     }
@@ -94,17 +99,13 @@ public class PasswordDialog
     // ActionListener method
     //----------------------------------------------------------------------
 
-    public void actionPerformed(ActionEvent e)
-    {
+    public void actionPerformed(ActionEvent e) {
         Object src = e.getSource();
 
-        if (src == okButton)
-        {
+        if (src == okButton) {
             password = new String(pwField.getPassword());
             setVisible(false);
-        }
-        else if (src == cancelButton)
-        {
+        } else if (src == cancelButton) {
             password = null;
             setVisible(false);
         }
@@ -114,20 +115,18 @@ public class PasswordDialog
     // KeyListener methods
     //----------------------------------------------------------------------
 
-    public void keyTyped(KeyEvent keyevent)
-    {
-        if (keyevent.getKeyChar() == '\n')
-        {
+    public void keyTyped(KeyEvent keyevent) {
+        if (keyevent.getKeyChar() == '\n') {
             password = new String(pwField.getPassword());
             setVisible(false);
         }
     }
 
-    public void keyPressed(KeyEvent keyevent)
-    {   }
+    public void keyPressed(KeyEvent keyevent) {
+    }
 
-    public void keyReleased(KeyEvent keyevent)
-    {   }
+    public void keyReleased(KeyEvent keyevent) {
+    }
 
 }
 

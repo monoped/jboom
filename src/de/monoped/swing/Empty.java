@@ -1,13 +1,11 @@
 package de.monoped.swing;
 
-import java.awt.*;
 import javax.swing.*;
+import java.awt.*;
 
 public class Empty
-    extends JComponent
-{
-    public Empty(Dimension dim)
-    {
+        extends JComponent {
+    public Empty(Dimension dim) {
         setSize(dim);
         setPreferredSize(dim);
         setMinimumSize(dim);

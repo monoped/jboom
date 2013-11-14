@@ -2,10 +2,8 @@ package de.monoped.jboom;
 
 /**
  * Created with IntelliJ IDEA.
- * User: bernd
  * Date: 09.11.13
  * Time: 19:15
- * To change this template use File | Settings | File Templates.
  */
 
 import de.monoped.swing.RunWait;
@@ -2065,7 +2063,7 @@ public class JBoom
     // Disables tree tooltips while popup is visible
     //----------------------------------------------------------------------
 
-      public void popupMenuWillBecomeInvisible(PopupMenuEvent popupmenuevent) {
+    public void popupMenuWillBecomeInvisible(PopupMenuEvent popupmenuevent) {
         renderer.setTipEnabled(true);
     }
 
@@ -2092,7 +2090,6 @@ public class JBoom
 
     @Override
     public void popupMenuWillBecomeVisible(PopupMenuEvent e) {
-        //To change body of implemented methods use File | Settings | File Templates.
     }
 
     //======================================================================

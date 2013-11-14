@@ -5,12 +5,12 @@ import java.awt.*;
 
 ////////////////////////////////////////////////////////////////////////
 
-/** Class containing  saveable / restorable component info */
+/**
+ * Class containing  saveable / restorable component info
+ */
 
-class CompInfo
-{
-    CompInfo(int x, int y, int w, int h, int position)
-    {
+class CompInfo {
+    CompInfo(int x, int y, int w, int h, int position) {
         this.x = x;
         this.y = y;
         this.w = w;
@@ -18,13 +18,12 @@ class CompInfo
         this.position = position;
     }
 
-    void setComponent(JLayeredPane pane, Component component)
-    {
+    void setComponent(JLayeredPane pane, Component component) {
         component.setLocation(x, y);
         component.setSize(w, h);
         pane.setPosition(component, position);
     }
 
-    int     x, y, w, h, position;
+    int x, y, w, h, position;
 }
 

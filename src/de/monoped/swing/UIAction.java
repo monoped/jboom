@@ -17,10 +17,11 @@ package de.monoped.swing;
  * monoped@users.sourceforge.net
  */
 
-import de.monoped.utils.KeyBundle;
-
+import java.awt.event.*;
+import java.net.*;
 import javax.swing.*;
-import java.net.URL;
+import de.monoped.swing.*;
+import de.monoped.utils.*;
 
 public abstract class UIAction
     extends AbstractAction
@@ -64,6 +65,8 @@ public abstract class UIAction
     {
         this(icon, bundle, key);
 
+        int mask = 0;
+
         if (accel != null)
             putValue(ACCELERATOR_KEY, KeyStroke.getKeyStroke(accel));
     }
@@ -106,7 +109,7 @@ public abstract class UIAction
     public UIAction(KeyBundle bundle, String key, boolean selected)
     {
         this((ImageIcon)null, bundle, key);
-        putValue(SELECTED_KEY, selected);
+        putValue(SELECTED_KEY, (Boolean)selected);
     }
 }
 

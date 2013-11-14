@@ -19,51 +19,50 @@ package de.monoped.jboom;
 
 import javax.swing.*;
 
-/** Contains all ImageIcons as constants. */
+/**
+ * Contains all ImageIcons as constants.
+ */
 
-class Icons
-{
-    static final ImageIcon   
-            ALL         = img("all.png"),
-            BOOKMARK    = img("bookmark.gif"),
-            CLOSE       = img("close.png"),
-            COPY        = img("copy.gif"),
-            DEL         = img("del.gif"),
-            DISK        = img("disk.png"),
-            DOWN        = img("down.gif"),
-            DOWNLOAD    = img("download.gif"),
-            EDIT        = img("edit.gif"),
-            ERROR       = img("no.png"),
-            FIND        = img("find.gif"),
-            FOLDER      = img("folder.png"),
+class Icons {
+    static final ImageIcon
+            ALL = img("all.png"),
+            BOOKMARK = img("bookmark.gif"),
+            CLOSE = img("close.png"),
+            COPY = img("copy.gif"),
+            DEL = img("del.gif"),
+            DISK = img("disk.png"),
+            DOWN = img("down.gif"),
+            DOWNLOAD = img("download.gif"),
+            EDIT = img("edit.gif"),
+            ERROR = img("no.png"),
+            FIND = img("find.gif"),
+            FOLDER = img("folder.png"),
             FOLDER_OPEN = img("folder-open.png"),
-            GO          = img("go.png"),
-            JBOOM       = img("trayicon.png"),
-            LED_ORANGE  = img("ledorange.png"),
-            LED_GREEN   = img("ledgreen.png"),
-            LED_RED     = img("ledred.png"),
-            MAIL        = img("mail.png"),
-            MAILLIST    = img("maillist.png"),
-            MAILLIST_EXPANDED   = img("maillistexp.png"),
-            MARK        = img("mark.png"),
-            NEW         = img("new.gif"),
-            NEXT        = img("next.png"),
-            OPEN        = img("open.gif"),
-            PASTE       = img("paste.gif"),
-            PREFS       = img("preferences.gif"),
-            PREV        = img("prev.png"),
-            ROOT        = img("root.gif"),
-            ROOTDIR     = img("rootdir.gif"),
-            SERVER      = img("server.png"),
-            SORT        = img("sort.png"),
-            UP          = img("up.gif"),
-            UPLOAD      = img("upload.gif")
-            ;
+            GO = img("go.png"),
+            JBOOM = img("trayicon.png"),
+            LED_ORANGE = img("ledorange.png"),
+            LED_GREEN = img("ledgreen.png"),
+            LED_RED = img("ledred.png"),
+            MAIL = img("mail.png"),
+            MAILLIST = img("maillist.png"),
+            MAILLIST_EXPANDED = img("maillistexp.png"),
+            MARK = img("mark.png"),
+            NEW = img("new.gif"),
+            NEXT = img("next.png"),
+            OPEN = img("open.gif"),
+            PASTE = img("paste.gif"),
+            PREFS = img("preferences.gif"),
+            PREV = img("prev.png"),
+            ROOT = img("root.gif"),
+            ROOTDIR = img("rootdir.gif"),
+            SERVER = img("server.png"),
+            SORT = img("sort.png"),
+            UP = img("up.gif"),
+            UPLOAD = img("upload.gif");
 
     //----------------------------------------------------------------------
 
-    private static ImageIcon img(String name)
-    {
+    private static ImageIcon img(String name) {
         return new ImageIcon(Icons.class.getClassLoader().getResource(name));
     }
 }

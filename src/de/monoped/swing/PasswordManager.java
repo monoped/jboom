@@ -18,18 +18,17 @@ package de.monoped.swing;
  */
 
 import java.awt.*;
-import java.util.*;
+import java.util.HashMap;
+import java.util.Map;
 
-public class PasswordManager
-{
+public class PasswordManager {
     private Map<String, String> map;
-    private Component           parent;
-    private String              text, title;
+    private Component parent;
+    private String text, title;
 
     //----------------------------------------------------------------------
 
-    public PasswordManager(Component parent, String title, String text)
-    {
+    public PasswordManager(Component parent, String title, String text) {
         this.parent = parent;
         this.title = title;
         this.text = text;
@@ -38,19 +37,16 @@ public class PasswordManager
 
     //----------------------------------------------------------------------
 
-    public void remove(String spec)
-    {
+    public void remove(String spec) {
         map.remove(spec);
     }
 
     //----------------------------------------------------------------------
 
-    public String getPassword(String spec)
-    {
+    public String getPassword(String spec) {
         String pwd = map.get(spec);
 
-        if (pwd == null)
-        {
+        if (pwd == null) {
             pwd = new PasswordDialog(parent, title, text + spec, null).getPassword();
 
             if (pwd != null)

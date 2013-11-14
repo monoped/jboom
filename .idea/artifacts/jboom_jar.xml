@@ -1,0 +1,8 @@
+<component name="ArtifactManager">
+  <artifact type="jar" build-on-make="true" name="jboom:jar">
+    <output-path>$PROJECT_DIR$/out/artifacts/jboom_jar</output-path>
+    <root id="archive" name="jboom.jar">
+      <element id="module-output" name="jboom" />
+    </root>
+  </artifact>
+</component>

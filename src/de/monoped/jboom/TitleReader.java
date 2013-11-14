@@ -17,31 +17,33 @@ package de.monoped.jboom;
  * monoped@users.sourceforge.net
  */
 
-import de.monoped.utils.*;
-import de.monoped.swing.*;
-import java.io.*;
-import java.net.*;
-import java.awt.*;
-import java.util.*;
-import java.util.concurrent.*;
-import javax.swing.*;
+import de.monoped.swing.RunWait;
+import de.monoped.utils.KeyBundle;
 
-/** Read page title from URL. */
+import javax.swing.*;
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.net.URL;
+import java.util.ResourceBundle;
+
+/**
+ * Read page title from URL.
+ */
 
 class TitleReader
-    extends RunWait<String>
-{
-    static KeyBundle    bundle = (KeyBundle)ResourceBundle.getBundle("de.monoped.jboom.Resources");
+        extends RunWait<String> {
+    static KeyBundle bundle = (KeyBundle) ResourceBundle.getBundle("de.monoped.jboom.Resources");
 
-    private URL         url;
+    private URL url;
 
     //----------------------------------------------------------------------
 
-    TitleReader(URL url)
-    {
+    TitleReader(URL url) {
         super(null);
-        
-        setComponent(new JLabel( bundle.getText("downloading", url.toString()))); 
+
+        setComponent(new JLabel(bundle.getText("downloading", url.toString())));
         setTitle(bundle.getText("wait"));
         setCancelText(bundle.getText("cancel"));
         this.url = url;
@@ -50,53 +52,48 @@ class TitleReader
     //----------------------------------------------------------------------
 
     public String result()
-        throws Exception
-    {
-        BufferedReader  reader = null;
+            throws Exception {
+        BufferedReader reader = null;
 
-        try
-        {
+        try {
             InputStream in = url.openStream();
 
             reader = new BufferedReader(new InputStreamReader(in));
 
-            StringBuilder    buf = new StringBuilder();
+            StringBuilder buf = new StringBuilder();
 
-            outer: while (true)
-            {
-                String  line = reader.readLine();
+            outer:
+            while (true) {
+                String line = reader.readLine();
 
                 if (line == null)
                     break;
-                
+
                 String lowline = line.toLowerCase();
-                
+
                 int ka = lowline.indexOf("<title>");
 
                 if (ka < 0)
                     continue;
 
                 // found <title>
-                
+
                 int ke = lowline.indexOf("</title>", ka + 7);
 
-                if (ke >= 0)
-                {
+                if (ke >= 0) {
                     buf.append(line.substring(ka + 7, ke));
                     break;
                 }
-                
+
                 buf.append(line.substring(ka + 7, line.length()));
 
-                while ((line = reader.readLine()) != null)
-                {
-                    lowline = line.toLowerCase(); 
+                while ((line = reader.readLine()) != null) {
+                    lowline = line.toLowerCase();
                     ke = lowline.indexOf("</title>");
 
                     if (ke < 0)
                         buf.append(line);
-                    else
-                    {
+                    else {
                         // found </title>
 
                         buf.append(line.substring(0, ke));
@@ -106,16 +103,11 @@ class TitleReader
             }
 
             return buf.toString().trim();
-        }
-        finally
-        {
-            try
-            {
+        } finally {
+            try {
                 if (reader != null)
                     reader.close();
-            }
-            catch (IOException e)
-            {
+            } catch (IOException e) {
                 if (JBoom.isDebug())
                     e.printStackTrace();
             }

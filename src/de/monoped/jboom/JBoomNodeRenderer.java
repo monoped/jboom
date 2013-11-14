@@ -17,27 +17,26 @@ package de.monoped.jboom;
  * monoped@users.sourceforge.net
  */
 
-import de.monoped.utils.*;
-import java.awt.*;
-import java.awt.event.*;
-import java.util.*;
+import de.monoped.utils.KeyBundle;
 
 import javax.swing.*;
-import javax.swing.tree.*;
+import javax.swing.tree.DefaultTreeCellRenderer;
+import java.awt.*;
+import java.util.ResourceBundle;
 
-/** Tree cell renderer. */
+/**
+ * Tree cell renderer.
+ */
 
 class JBoomNodeRenderer
-    extends DefaultTreeCellRenderer
-{
-    static KeyBundle    bundle = (KeyBundle)ResourceBundle.getBundle("de.monoped.jboom.Resources");
+        extends DefaultTreeCellRenderer {
+    static KeyBundle bundle = (KeyBundle) ResourceBundle.getBundle("de.monoped.jboom.Resources");
 
-    private boolean     tipEnabled;
+    private boolean tipEnabled;
 
     //----------------------------------------------------------------------
 
-    JBoomNodeRenderer()
-    {
+    JBoomNodeRenderer() {
         setLeafIcon(Icons.MARK);
         setOpenIcon(Icons.FOLDER_OPEN);
         setClosedIcon(Icons.FOLDER);
@@ -47,42 +46,35 @@ class JBoomNodeRenderer
     //----------------------------------------------------------------------
 
     public Component getTreeCellRendererComponent(JTree tree, Object value, boolean sel,
-                                  boolean expanded, boolean leaf, int row, boolean hasFocus)
-    {
+                                                  boolean expanded, boolean leaf, int row, boolean hasFocus) {
         super.getTreeCellRendererComponent(tree, value, sel, expanded, leaf, row, hasFocus);
-    
-        JBoomNode   node = (JBoomNode)value;
 
-        if (leaf)
-        {
+        JBoomNode node = (JBoomNode) value;
+
+        if (leaf) {
             if (node.isMail())
                 setIcon(Icons.MAIL);
 
             if (tipEnabled)
-                setToolTipText(((JBoomNode)value).getURL());
-        }
-        else
-        {
-            if (node.isMail())
-            {
+                setToolTipText(((JBoomNode) value).getURL());
+        } else {
+            if (node.isMail()) {
                 if (tipEnabled)
                     setToolTipText(bundle.getText("maillist"));
 
                 setIcon(expanded ? Icons.MAILLIST_EXPANDED : Icons.MAILLIST);
-            }
-            else
-                setToolTipText(null);   
+            } else
+                setToolTipText(null);
         }
-    
+
         return this;
     }
 
     //----------------------------------------------------------------------
 
-    void setTipEnabled(boolean tipEnabled)
-    {
+    void setTipEnabled(boolean tipEnabled) {
         this.tipEnabled = tipEnabled;
     }
-    
+
 }                                   
 

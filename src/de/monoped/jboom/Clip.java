@@ -17,49 +17,46 @@ package de.monoped.jboom;
  * monoped@users.sourceforge.net
  */
 
-import java.util.*;
+import javax.swing.tree.TreePath;
 
-import javax.swing.tree.*;
+/**
+ * Tree made of ClipNodes, serves as node clipboard.
+ */
 
-/** Tree made of ClipNodes, serves as node clipboard. */
-
-class Clip
-{
-    private ClipNode    clipRoot;
+class Clip {
+    private ClipNode clipRoot;
 
     //----------------------------------------------------------------------
 
-    /** Create clip from selected tree paths.
+    /**
+     * Create clip from selected tree paths.
      *
-     *  @param paths        Array of selected paths.
-     *  @param recursive    If true, contents of each folder are selected recursively.
+     * @param paths     Array of selected paths.
+     * @param recursive If true, contents of each folder are selected recursively.
      */
 
-    Clip(TreePath[] paths, boolean recursive)
-    {
+    Clip(TreePath[] paths, boolean recursive) {
         clipRoot = new ClipNode();
-        
+
         // Create ClipNode tree
 
-        for (TreePath path: paths)
-        {
-            Object[]    components = path.getPath();   // Components of a selected path
-            ClipNode    clipNode = clipRoot;
+        for (TreePath path : paths) {
+            Object[] components = path.getPath();   // Components of a selected path
+            ClipNode clipNode = clipRoot;
 
-            for (Object comp: components)
-            {
+            for (Object comp : components) {
                 /* Look for an existing ClipNode equal to this component
                  * (folder with the same name or leaf with the same name
                  * and same URL),
                  */
-                
-                ClipNode  child = clipNode.findChild((JBoomNode)comp);
-                
+
+                ClipNode child = clipNode.findChild((JBoomNode) comp);
+
                 if (child != null)
                     clipNode = child;   // found, continue with existing
-            } 
+            }
 
-            clipNode.add(new ClipNode((JBoomNode)path.getLastPathComponent(), recursive));
+            clipNode.add(new ClipNode((JBoomNode) path.getLastPathComponent(), recursive));
         }
 
         // Replace all JBoomNode references by clones
@@ -69,26 +66,27 @@ class Clip
 
     //----------------------------------------------------------------------
 
-    /** Non-recursive clip. */
-
-    Clip(TreePath[] paths)
-    {
-        this(paths, false);
-    }
-    
-    //----------------------------------------------------------------------
-
-    /** Create a copy of all clip subtrees.
-     *
-     *  @return     Array of 1st-level clip subtree copies.
+    /**
+     * Non-recursive clip.
      */
 
-    JBoomNode[] getCopy()
-    {
+    Clip(TreePath[] paths) {
+        this(paths, false);
+    }
+
+    //----------------------------------------------------------------------
+
+    /**
+     * Create a copy of all clip subtrees.
+     *
+     * @return Array of 1st-level clip subtree copies.
+     */
+
+    JBoomNode[] getCopy() {
         JBoomNode[] nodes = new JBoomNode[clipRoot.getSize()];
-        int         i = 0;
-        
-        for (ClipNode child: clipRoot.getChildren())
+        int i = 0;
+
+        for (ClipNode child : clipRoot.getChildren())
             nodes[i++] = child.getCopy();
 
         return nodes;
@@ -96,19 +94,21 @@ class Clip
 
     //----------------------------------------------------------------------
 
-    /** Return the root node. */
+    /**
+     * Return the root node.
+     */
 
-    ClipNode getRoot()
-    {
+    ClipNode getRoot() {
         return clipRoot;
     }
-    
+
     //----------------------------------------------------------------------
 
-    /** Check if clip is empty. */
+    /**
+     * Check if clip is empty.
+     */
 
-    boolean isEmpty()
-    {
+    boolean isEmpty() {
         return clipRoot.getChildren().size() == 0;
     }
 }
